@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JR MARKETING (PVT) LTD — Dashboard</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230a5c2e'/><text x='50%25' y='55%25' font-size='13' font-weight='900' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'>JR</text></svg>">
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #eef1f8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ---- NAVBAR ---- */
+        .navbar {
+            background: #0a5c2e;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            box-shadow: 0 2px 10px rgba(10,92,46,0.4);
+            flex-shrink: 0;
+        }
+        .navbar-left { display: flex; align-items: center; height: 100%; }
+        .nav-sidebar-toggle {
+            width: 52px; height: 52px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: rgba(255,255,255,0.8);
+            transition: background 0.2s; flex-shrink: 0;
+        }
+        .nav-sidebar-toggle:hover { background: rgba(255,255,255,0.1); }
+        .navbar-brand {
+            display: flex; align-items: center; gap: 8px;
+            color: #fff; font-weight: 800; font-size: 15px;
+            letter-spacing: 0.5px; padding: 0 14px 0 8px; white-space: nowrap;
+        }
+        .brand-dot {
+            width: 9px; height: 9px; border-radius: 50%;
+            background: #22c55e; display: inline-block; flex-shrink: 0; margin-left: 2px;
+        }
+        .navbar-center { flex: 1; display: flex; align-items: center; justify-content: center; }
+        .nav-info-btn {
+            width: 28px; height: 28px; border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.5); background: transparent;
+            color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .nav-info-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+        .navbar-right { display: flex; align-items: center; gap: 5px; }
+        .nav-icon-btn {
+            width: 36px; height: 36px; border-radius: 8px;
+            background: transparent; border: none;
+            color: rgba(255,255,255,0.75); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; transition: background 0.2s, color 0.2s;
+        }
+        .nav-icon-btn:hover { background: rgba(255,255,255,0.12); color: white; }
+        .nav-pos-btn {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px; color: white; padding: 0 12px; height: 34px;
+            font-size: 13px; font-weight: 700; cursor: pointer; letter-spacing: 0.5px;
+            transition: background 0.2s;
+        }
+        .nav-pos-btn:hover { background: rgba(255,255,255,0.22); }
+        .nav-divider { width: 1px; height: 22px; background: rgba(255,255,255,0.2); margin: 0 4px; }
+        .nav-date { color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 600; padding: 0 4px; white-space: nowrap; }
+        .nav-bell { position: relative; }
+        .nav-bell-dot {
+            position: absolute; top: 6px; right: 6px;
+            width: 7px; height: 7px; background: #ef4444;
+            border-radius: 50%; border: 1.5px solid #0a5c2e;
+            display: none;
+        }
+        .nav-user {
+            display: flex; align-items: center; gap: 7px;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 8px; padding: 0 10px; height: 34px;
+            color: white; font-size: 13px; font-weight: 600;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .nav-user:hover { background: rgba(255,255,255,0.2); }
+        .nav-user-avatar {
+            width: 24px; height: 24px; border-radius: 50%; background: #16a34a;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 800;
+        }
+
+        /* ---- LAYOUT ---- */
+        .layout { display: flex; flex: 1; min-height: calc(100vh - 52px); }
+
+        /* ---- SIDEBAR ---- */
+        .sidebar {
+            width: 240px; background: #f8f9fc;
+            border-right: 1px solid #dde3f0;
+            flex-shrink: 0; overflow-y: auto;
+            overflow-x: hidden;
+            transition: width 0.28s ease;
+        }
+        .sidebar.collapsed { width: 0; }
+        .sidebar-inner { padding: 6px 0 28px; }
+        .sidebar-menu { list-style: none; }
+        .menu-item { position: relative; }
+        .menu-link {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 16px 10px 14px; color: #374151;
+            font-size: 13.5px; font-weight: 500; text-decoration: none;
+            cursor: pointer; transition: background 0.15s, color 0.15s;
+            border-left: 3px solid transparent; user-select: none; white-space: nowrap;
+        }
+        .menu-link:hover { background: #dcfce7; color: #15803d; text-decoration: none; }
+        .menu-link.active { background: #dcfce7; color: #15803d; border-left-color: #16a34a; font-weight: 700; }
+        .menu-link-left { display: flex; align-items: center; gap: 10px; }
+        .menu-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #6b7280; }
+        .menu-link.active .menu-icon, .menu-link:hover .menu-icon { color: #16a34a; }
+        .menu-chevron { font-size: 10px; color: #9ca3af; transition: transform 0.2s; flex-shrink: 0; }
+        .menu-item.open > .menu-link .menu-chevron { transform: rotate(90deg); }
+        .submenu { display: none; background: #f0fdf4; list-style: none; }
+        .menu-item.open .submenu { display: block; }
+        .submenu-link {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 16px 8px 40px; color: #4b5563;
+            font-size: 12.5px; text-decoration: none;
+            transition: color 0.15s, background 0.15s; cursor: pointer; white-space: nowrap;
+        }
+        .submenu-link:hover { color: #15803d; background: #bbf7d0; text-decoration: none; }
+
+        /* ---- MAIN ---- */
+        .main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+
+        /* Blue welcome header */
+        .content-header {
+            background: #0a5c2e; padding: 22px 26px 20px;
+            display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+            position: relative;
+        }
+        .welcome-text {
+            font-size: 26px; font-weight: 800; color: #fff;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .filter-btn {
+            display: flex; align-items: center; gap: 7px;
+            background: #fff; border: none; border-radius: 8px;
+            padding: 9px 16px; font-size: 13px; font-weight: 600;
+            color: #374151; cursor: pointer; white-space: nowrap;
+            transition: background 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+        .filter-btn:hover { background: #f0fdf4; }
+
+        /* Date filter dropdown panel */
+        .date-filter-panel {
+            display: none; position: absolute; top: 100%; right: 26px;
+            background: #fff; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 16px 18px; z-index: 50; min-width: 300px;
+            animation: dfpSlide 0.2s ease;
+        }
+        .date-filter-panel.open { display: block; }
+        @keyframes dfpSlide {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .dfp-presets { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+        .dfp-preset {
+            padding: 6px 13px; border-radius: 20px; border: 1.5px solid #d1d5db;
+            background: #fff; font-size: 12px; font-weight: 600; color: #374151;
+            cursor: pointer; transition: all 0.15s;
+        }
+        .dfp-preset:hover { border-color: #16a34a; color: #16a34a; }
+        .dfp-preset.active { background: #0a5c2e; color: #fff; border-color: #0a5c2e; }
+        .dfp-custom {
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            border-top: 1px solid #e5e7eb; padding-top: 12px;
+        }
+        .dfp-custom label { font-size: 12px; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 6px; }
+        .dfp-custom input[type="date"] {
+            padding: 6px 10px; border: 1.5px solid #d1d5db; border-radius: 8px;
+            font-size: 13px; color: #374151; outline: none; cursor: pointer;
+        }
+        .dfp-custom input[type="date"]:focus { border-color: #16a34a; box-shadow: 0 0 0 2px rgba(22,163,74,0.15); }
+        .dfp-apply {
+            padding: 7px 18px; border-radius: 8px; border: none;
+            background: #0a5c2e; color: #fff; font-size: 12px; font-weight: 700;
+            cursor: pointer; transition: background 0.2s; margin-left: auto;
+        }
+        .dfp-apply:hover { background: #16a34a; }
+        .filter-badge {
+            display: inline-block; background: #22c55e; color: #fff; font-size: 10px;
+            font-weight: 700; padding: 1px 7px; border-radius: 10px; margin-left: 4px;
+        }
+
+        /* Content body */
+        .content-body { padding: 20px 20px 32px; background: #eef1f8; flex: 1; }
+
+        /* Stats rows */
+        .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 14px; }
+        .stat-card {
+            background: #fff; border-radius: 12px; padding: 17px 16px 15px;
+            display: flex; align-items: center; gap: 13px;
+            box-shadow: 0 1px 5px rgba(10,17,114,0.07);
+            transition: transform 0.2s, box-shadow 0.2s; cursor: default;
+        }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(10,17,114,0.13); }
+        .stat-icon-wrap {
+            width: 48px; height: 48px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .stat-icon-wrap svg { width: 22px; height: 22px; }
+        .icon-blue   { background: #dcfce7; color: #16a34a; }
+        .icon-green  { background: #d1fae5; color: #059669; }
+        .icon-yellow { background: #fef9c3; color: #ca8a04; }
+        .icon-red    { background: #fee2e2; color: #dc2626; }
+        .stat-body { min-width: 0; flex: 1; }
+        .stat-label {
+            font-size: 12px; color: #6b7280; font-weight: 500;
+            display: flex; align-items: center; gap: 4px; white-space: nowrap;
+        }
+        .info-icon {
+            width: 14px; height: 14px; border-radius: 50%;
+            border: 1.5px solid #9ca3af; display: inline-flex;
+            align-items: center; justify-content: center;
+            font-size: 9px; font-weight: 700; color: #9ca3af;
+            cursor: help; flex-shrink: 0;
+        }
+        .stat-value { font-size: 18px; font-weight: 800; color: #111827; margin-top: 4px; white-space: nowrap; }
+
+        /* Responsive */
+        @media (max-width: 1100px) { .stats-row { grid-template-columns: repeat(2,1fr); } }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .sidebar.mobile-open { display: flex; position: fixed; left: 0; top: 52px; height: calc(100vh - 52px); z-index: 300; width: 240px; box-shadow: 4px 0 20px rgba(0,0,0,.2); }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+            .welcome-text { font-size: 18px; }
+            .content-header { padding: 14px 16px; }
+            .content-body { padding: 14px; }
+            .nav-date { display: none; }
+            .qa-grid { grid-template-columns: repeat(2,1fr); }
+            .stock-alert-table th:nth-child(3),
+            .stock-alert-table td:nth-child(3),
+            .stock-alert-table th:nth-child(5),
+            .stock-alert-table td:nth-child(5) { display: none; }
+        }
+        @media (max-width: 500px) {
+            .stats-row { grid-template-columns: 1fr; }
+            .welcome-text { font-size: 15px; }
+            .nav-pos-btn span { display: none; }
+            .qa-grid { grid-template-columns: 1fr 1fr; }
+        }
+        /* ---- QUICK ACTIONS ---- */
+        .quick-actions-wrap { padding: 0 16px 20px; }
+        .qa-heading {
+            font-size: 13px; font-weight: 700; color: #374151;
+            margin-bottom: 12px; text-transform: uppercase; letter-spacing: .5px;
+        }
+        .qa-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        .qa-card {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 10px; padding: 20px 12px; border-radius: 12px; text-decoration: none;
+            cursor: pointer; transition: transform .15s, box-shadow .15s;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+        .qa-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,.14); }
+        .qa-icon {
+            width: 52px; height: 52px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .qa-label { font-size: 12px; font-weight: 700; text-align: center; }
+        .qa-blue  { background: #f0fdf4; color: #15803d; }
+        .qa-blue  .qa-icon { background: #dcfce7; color: #16a34a; }
+        .qa-green { background: #f0fdf4; color: #15803d; }
+        .qa-green .qa-icon { background: #dcfce7; color: #16a34a; }
+        .qa-purple { background: #faf5ff; color: #7c3aed; }
+        .qa-purple .qa-icon { background: #ede9fe; color: #7c3aed; }
+        .qa-orange { background: #fff7ed; color: #c2410c; }
+        .qa-orange .qa-icon { background: #ffedd5; color: #ea580c; }
+
+        /* ---- STOCK ALERT TABLE ---- */
+        .stock-alert-wrap {
+            background: #fff; border-radius: 12px; padding: 0;
+            box-shadow: 0 1px 5px rgba(10,17,114,0.07);
+            margin: 0 0 14px; overflow: hidden;
+        }
+        .stock-alert-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 15px 18px 13px; border-bottom: 1px solid #f3f4f6;
+        }
+        .stock-alert-title {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 14px; font-weight: 700; color: #111827;
+        }
+        .stock-alert-title svg { color: #dc2626; }
+        .stock-alert-count {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: #fee2e2; color: #dc2626; font-size: 11px; font-weight: 700;
+            min-width: 22px; height: 22px; border-radius: 11px; padding: 0 7px;
+        }
+        .stock-alert-link {
+            font-size: 12px; font-weight: 600; color: #16a34a; text-decoration: none;
+        }
+        .stock-alert-link:hover { text-decoration: underline; }
+        .stock-alert-table { width: 100%; border-collapse: collapse; }
+        .stock-alert-table th {
+            background: #f9fafb; padding: 9px 14px; font-size: 11px; font-weight: 600;
+            color: #6b7280; text-align: left; text-transform: uppercase; letter-spacing: .3px;
+        }
+        .stock-alert-table td {
+            padding: 10px 14px; font-size: 13px; color: #374151; border-bottom: 1px solid #f3f4f6;
+        }
+        .stock-alert-table tr:last-child td { border-bottom: none; }
+        .stock-alert-table tr:hover { background: #fef2f2; }
+        .sa-sku { font-family: 'Courier New', monospace; font-size: 12px; color: #6b7280; background: #f3f4f6; padding: 2px 7px; border-radius: 4px; }
+        .sa-badge-out {
+            display: inline-block; padding: 2px 10px; border-radius: 20px;
+            font-size: 11px; font-weight: 600; background: #fee2e2; color: #dc2626;
+        }
+        .sa-badge-low {
+            display: inline-block; padding: 2px 10px; border-radius: 20px;
+            font-size: 11px; font-weight: 600; background: #fef9c3; color: #ca8a04;
+        }
+        .sa-empty {
+            padding: 30px 20px; text-align: center; color: #6b7280; font-size: 13px;
+        }
+        .sa-empty svg { margin: 0 auto 8px; display: block; color: #d1d5db; }
+
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" role="navigation" aria-label="Top Navigation">
+        <div class="navbar-left">
+            <div class="nav-sidebar-toggle" id="sidebar-toggle" role="button" tabindex="0" aria-label="Toggle sidebar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                     stroke="currentColor" stroke-width="2.2" stroke-linecap="round" viewBox="0 0 24 24">
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </div>
+            <div class="navbar-brand">JR MARKETING (PVT) LTD <span class="brand-dot"></span></div>
+        </div>
+
+        <div class="navbar-center">
+        </div>
+
+        <div class="navbar-right">
+            <!-- POS -->
+            <button class="nav-pos-btn" title="Point of Sale" onclick="window.location.href='pos.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                     stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <rect x="2" y="3" width="20" height="14" rx="2"/>
+                    <line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+                POS
+            </button>
+            <div class="nav-divider"></div>
+            <span class="nav-date" id="nav-date">24/02/2026</span>
+            <div class="nav-divider"></div>
+            <!-- Bell -->
+            <button class="nav-icon-btn nav-bell" title="Notifications">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span class="nav-bell-dot"></span>
+            </button>
+            <!-- User -->
+            <div class="nav-user" id="nav-user" role="button" tabindex="0">
+                <div class="nav-user-avatar" id="nav-avatar">A</div>
+                <span id="nav-username">Admin</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none"
+                     stroke="currentColor" stroke-width="2.2" stroke-linecap="round" viewBox="0 0 24 24">
+                    <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== LAYOUT ===== -->
+    <div class="layout">
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar" id="sidebar" role="complementary">
+            <div class="sidebar-inner">
+                <ul class="sidebar-menu">
+
+                    <!-- Home -->
+                    <li class="menu-item">
+                        <a href="dashboard.html" class="menu-link active">
+                            <span class="menu-link-left">
+                                <span class="menu-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                        <polyline points="9 22 9 12 15 12 15 22"/>
+                                    </svg>
+                                </span>
+                                Home
+                            </span>
+                        </a>
+                    </li>
+
+                    <!-- Contacts -->
+                    <li class="menu-item" data-menu="contacts">
+                        <div class="menu-link" onclick="toggleMenu('contacts')">
+                            <span class="menu-link-left">
+                                <span class="menu-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="9" cy="7" r="4"/>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                                    </svg>
+                                </span>
+                                Contacts
+                            </span>
+                            <span class="menu-chevron">&#9654;</span>
+                        </div>
+                        <ul class="submenu">
+                            <li><a class="submenu-link" href="customers.html">&#8227;&nbsp; Customers</a></li>
+                            <li><a class="submenu-link" href="suppliers.html">&#8227;&nbsp; Suppliers</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Products -->
+                    <li class="menu-item" data-menu="products">
+                        <div class="menu-link" onclick="toggleMenu('products')">
+                            <span class="menu-link-left">
+                                <span class="menu-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                                    </svg>
+                                </span>
+                                Products
+                            </span>
+                            <span class="menu-chevron">&#9654;</span>
+                        </div>
+                        <ul class="submenu">
+                            <li><a class="submenu-link" href="products.html">&#8227;&nbsp; Products List</a></li>
+                            <li><a class="submenu-link" href="products.html#add">&#8227;&nbsp; Add New Product</a></li>
+                            <li><a class="submenu-link" href="units.html">&#8227;&nbsp; Units</a></li>
+                            <li><a class="submenu-link" href="stock.html">&#8227;&nbsp; Stock</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Purchases -->
+                    <li class="menu-item" data-menu="purchases">
+                        <div class="menu-link" onclick="toggleMenu('purchases')">
+                            <span class="menu-link-left">
+                                <span class="menu-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <polyline points="8 17 12 21 16 17"/>
+                                        <line x1="12" y1="12" x2="12" y2="21"/>
+                                        <path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/>
+                                    </svg>
+                                </span>
+                                Purchases
+                            </span>
+                            <span class="menu-chevron">&#9654;</span>
+                        </div>
+                        <ul class="submenu">
+                            <li><a class="submenu-link" href="purchases.html">&#8227;&nbsp; Purchase List</a></li>
+                            <li><a class="submenu-link" href="purchases.html#add">&#8227;&nbsp; Add Purchase</a></li>
+                            <li><a class="submenu-link" href="purchases.html#return">&#8227;&nbsp; Purchase Return</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Sell -->
+                    <li class="menu-item" data-menu="sell">
+                        <div class="menu-link" onclick="toggleMenu('sell')">
+                            <span class="menu-link-left">
+                                <span class="menu-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <polyline points="17 1 21 5 17 9"/>
+                                        <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                                        <polyline points="7 23 3 19 7 15"/>
+                                        <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                                    </svg>
+                                </span>
+                                Sell
+                            </span>
+                            <span class="menu-chevron">&#9654;</span>
+                        </div>
+                        <ul class="submenu">
+                            <li><a class="submenu-link" href="sales.html">&#8227;&nbsp; All Sales</a></li>
+                            <li><a class="submenu-link" href="add-sale.html">&#8227;&nbsp; Add Sale</a></li>
+                            <li><a class="submenu-link" href="sale-return.html">&#8227;&nbsp; Sale Return</a></li>
+                            <li><a class="submenu-link" href="sales.html#quotations">&#8227;&nbsp; Quotations</a></li>
+                            <li><a class="submenu-link" href="sales.html#credit">&#8227;&nbsp; Credit Sales</a></li>
+                            <li><a class="submenu-link" href="sales.html#cheques">&#8227;&nbsp; Cheques</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Expenses -->
+                    <li class="menu-item" data-menu="expenses">
+                        <div class="menu-link" onclick="toggleMenu('expenses')">
+                            <span class="menu-link-left">
+                                <span class="menu-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                                        <line x1="1" y1="10" x2="23" y2="10"/>
+                                    </svg>
+                                </span>
+                                Expenses
+                            </span>
+                            <span class="menu-chevron">&#9654;</span>
+                        </div>
+                        <ul class="submenu">
+                            <li><a class="submenu-link" href="expenses.html">&#8227;&nbsp; Expense List</a></li>
+                            <li><a class="submenu-link" href="expenses.html#add">&#8227;&nbsp; Add Expense</a></li>
+                            <li><a class="submenu-link" href="expense-categories.html">&#8227;&nbsp; Expense Categories</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Payments -->
+                    <li class="menu-item">
+                        <a href="payments.html" class="menu-link">
+                            <span class="menu-link-left">
+                                <span class="menu-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <rect x="1" y="4" width="22" height="16" rx="2"/>
+                                        <line x1="1" y1="10" x2="23" y2="10"/>
+                                        <line x1="7" y1="15" x2="10" y2="15"/>
+                                        <line x1="13" y1="15" x2="17" y2="15"/>
+                                    </svg>
+                                </span>
+                                Payments
+                            </span>
+                        </a>
+                    </li>
+
+                    <!-- Reports -->
+                    <li class="menu-item" data-menu="reports">
+                        <div class="menu-link" onclick="toggleMenu('reports')">
+                            <span class="menu-link-left">
+                                <span class="menu-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <line x1="18" y1="20" x2="18" y2="10"/>
+                                        <line x1="12" y1="20" x2="12" y2="4"/>
+                                        <line x1="6" y1="20" x2="6" y2="14"/>
+                                    </svg>
+                                </span>
+                                Reports
+                            </span>
+                            <span class="menu-chevron">&#9654;</span>
+                        </div>
+                        <ul class="submenu">
+                            <li><a class="submenu-link" href="profit-loss.html">&#8227;&nbsp; Profit / Loss</a></li>
+                            <li><a class="submenu-link" href="purchase-report.html">&#8227;&nbsp; Purchase Report</a></li>
+                            <li><a class="submenu-link" href="sales-report.html">&#8227;&nbsp; Sales Report</a></li>
+                            <li><a class="submenu-link" href="expense-report.html">&#8227;&nbsp; Expense Report</a></li>
+                            <li><a class="submenu-link" href="stock-report.html">&#8227;&nbsp; Stock Report</a></li>
+                            <li><a class="submenu-link" href="tax-report.html">&#8227;&nbsp; Tax Report</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </aside>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <main class="main" role="main">
+
+            <!-- Blue welcome bar -->
+            <div class="content-header">
+                <div class="welcome-text">
+                    Welcome&nbsp;<span id="welcome-name">Admin</span> &nbsp;👋
+                </div>
+                <button class="filter-btn" id="filter-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    Filter by date
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
+                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <!-- Date Filter Dropdown -->
+                <div class="date-filter-panel" id="date-filter-panel">
+                    <div class="dfp-presets">
+                        <button class="dfp-preset active" data-range="today">Today</button>
+                        <button class="dfp-preset" data-range="yesterday">Yesterday</button>
+                        <button class="dfp-preset" data-range="last7">Last 7 Days</button>
+                        <button class="dfp-preset" data-range="last30">Last 30 Days</button>
+                        <button class="dfp-preset" data-range="thisMonth">This Month</button>
+                        <button class="dfp-preset" data-range="lastMonth">Last Month</button>
+                        <button class="dfp-preset" data-range="thisYear">This Year</button>
+                        <button class="dfp-preset" data-range="all">All Time</button>
+                    </div>
+                    <div class="dfp-custom">
+                        <label>From <input type="date" id="dfp-from"></label>
+                        <label>To &nbsp;&nbsp;<input type="date" id="dfp-to"></label>
+                        <button class="dfp-apply" id="dfp-apply">Apply</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats + Chart -->
+            <div class="content-body">
+
+                <!-- ROW 1 -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-icon-wrap icon-blue">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                            </svg>
+                        </div>
+                        <div class="stat-body">
+                            <div class="stat-label">Total Sales</div>
+                            <div class="stat-value" id="stat-total-sales">LKR &nbsp;0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon-wrap icon-green">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <line x1="12" y1="1" x2="12" y2="23"/>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                        </div>
+                        <div class="stat-body">
+                            <div class="stat-label">Net</div>
+                            <div class="stat-value" id="stat-net">LKR &nbsp;0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon-wrap icon-yellow">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                        </div>
+                        <div class="stat-body">
+                            <div class="stat-label">Invoice due</div>
+                            <div class="stat-value" id="stat-invoice-due">LKR &nbsp;0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon-wrap icon-red">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <polyline points="17 1 21 5 17 9"/>
+                                <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                                <polyline points="7 23 3 19 7 15"/>
+                                <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                            </svg>
+                        </div>
+                        <div class="stat-body">
+                            <div class="stat-label">Total Sell Return</div>
+                            <div class="stat-value" id="stat-sell-return">LKR &nbsp;0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROW 2 -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-icon-wrap icon-blue">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <polyline points="8 17 12 21 16 17"/>
+                                <line x1="12" y1="12" x2="12" y2="21"/>
+                                <path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/>
+                            </svg>
+                        </div>
+                        <div class="stat-body">
+                            <div class="stat-label">Total purchase</div>
+                            <div class="stat-value" id="stat-total-purchase">LKR &nbsp;0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon-wrap icon-yellow">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                        </div>
+                        <div class="stat-body">
+                            <div class="stat-label">Purchase due</div>
+                            <div class="stat-value" id="stat-purchase-due">LKR &nbsp;0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon-wrap icon-red">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <polyline points="1 4 1 10 7 10"/>
+                                <path d="M3.51 15a9 9 0 1 0 .49-3.88"/>
+                            </svg>
+                        </div>
+                        <div class="stat-body">
+                            <div class="stat-label">Total Purchase Return</div>
+                            <div class="stat-value" id="stat-purchase-return">LKR &nbsp;0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon-wrap icon-red">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                                <line x1="1" y1="10" x2="23" y2="10"/>
+                            </svg>
+                        </div>
+                        <div class="stat-body">
+                            <div class="stat-label">Expense</div>
+                            <div class="stat-value" id="stat-expense">LKR &nbsp;0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /content-body -->
+
+            <!-- ── Stock Alert Products ── -->
+            <div style="padding: 0 20px 6px; background: #eef1f8;">
+                <div class="stock-alert-wrap">
+                    <div class="stock-alert-header">
+                        <div class="stock-alert-title">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            Stock Alert Products
+                            <span class="stock-alert-count" id="sa-count">0</span>
+                        </div>
+                        <a class="stock-alert-link" href="stock-report.html">View Stock Report →</a>
+                    </div>
+                    <div id="sa-body">
+                        <table class="stock-alert-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Product</th>
+                                    <th>SKU</th>
+                                    <th>Current Stock</th>
+                                    <th>Alert Qty</th>
+                                    <th>Selling Price</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sa-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Quick Actions ── -->
+            <div class="quick-actions-wrap">
+                <div class="qa-heading">Quick Actions</div>
+                <div class="qa-grid">
+
+                    <a class="qa-card qa-blue" href="pos.html" title="Open Point of Sale">
+                        <div class="qa-icon">
+                            <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                <line x1="8" y1="21" x2="16" y2="21"/>
+                                <line x1="12" y1="17" x2="12" y2="21"/>
+                            </svg>
+                        </div>
+                        <div class="qa-label">Open POS</div>
+                    </a>
+
+                    <a class="qa-card qa-green" href="products.html#add" title="Add New Product">
+                        <div class="qa-icon">
+                            <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                <line x1="12" y1="9" x2="12" y2="15"/>
+                                <line x1="9" y1="12" x2="15" y2="12"/>
+                            </svg>
+                        </div>
+                        <div class="qa-label">Add New Product</div>
+                    </a>
+
+                    <a class="qa-card qa-purple" href="payments.html" title="View Payments">
+                        <div class="qa-icon">
+                            <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <rect x="1" y="4" width="22" height="16" rx="2"/>
+                                <line x1="1" y1="10" x2="23" y2="10"/>
+                                <line x1="7" y1="15" x2="10" y2="15"/>
+                                <line x1="13" y1="15" x2="17" y2="15"/>
+                            </svg>
+                        </div>
+                        <div class="qa-label">Payments</div>
+                    </a>
+
+                    <a class="qa-card qa-orange" href="expenses.html#add" title="Add Expense" id="qa-expense">
+                        <div class="qa-icon">
+                            <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                                <line x1="1" y1="10" x2="23" y2="10"/>
+                            </svg>
+                        </div>
+                        <div class="qa-label">Add Expense</div>
+                    </a>
+
+                </div>
+            </div>
+
+        </main>
+    </div><!-- /layout -->
+
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/toast.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        /* Auth guard */
+        Auth.requireAuth();
+
+        /* User info */
+        const session = Auth.getSession();
+        if (session && session.user) {
+            const name  = session.user.name || session.user.username;
+            const first = name.split(' ')[0];
+            document.getElementById('welcome-name').textContent = first;
+            document.getElementById('nav-username').textContent = name;
+            document.getElementById('nav-avatar').textContent   = name.charAt(0).toUpperCase();
+        }
+
+        /* Live date */
+        const now = new Date();
+        const dd  = String(now.getDate()).padStart(2,'0');
+        const mm  = String(now.getMonth()+1).padStart(2,'0');
+        const yy  = now.getFullYear();
+        document.getElementById('nav-date').textContent = `${dd}/${mm}/${yy}`;
+
+        /* Sidebar toggle */
+        document.getElementById('sidebar-toggle').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+        });
+
+        /* Logout */
+        document.getElementById('nav-user').addEventListener('click', () => {
+            if (confirm('Do you want to logout?')) {
+                Toast.info('Logging out...');
+                setTimeout(() => Auth.logout(), 600);
+            }
+        });
+
+        /* ============================================================
+           DASHBOARD  DATA  LOADER
+           ============================================================ */
+
+        const fmt = v => {
+            const n = Number(v) || 0;
+            return 'LKR \u00a0' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        };
+
+        /* Helper: safely read localStorage JSON array */
+        const readLS = key => {
+            try { return JSON.parse(localStorage.getItem(key)) || []; }
+            catch { return []; }
+        };
+
+        /* Normalise a date value into YYYY-MM-DD string */
+        const toDateStr = v => {
+            if (!v) return null;
+            const d = new Date(v);
+            if (isNaN(d.getTime())) return null;
+            return d.toISOString().slice(0, 10);
+        };
+
+        /* Core: load stats, optionally filtered by date range */
+        function loadStats(fromDate, toDate) {
+            const inRange = rec => {
+                if (!fromDate && !toDate) return true;
+                const d = toDateStr(rec.date || rec.createdAt || rec.returnDate);
+                if (!d) return true; // include records with no date
+                if (fromDate && d < fromDate) return false;
+                if (toDate   && d > toDate)   return false;
+                return true;
+            };
+
+            /* Sales (jr_payments) */
+            const sales = readLS('jr_payments').filter(inRange);
+            let totalSales = 0, invoiceDue = 0;
+            sales.forEach(s => {
+                totalSales += parseFloat(s.totalPayable || s.total || 0);
+                const bal = parseFloat(s.balance || 0);
+                if (bal > 0) invoiceDue += bal;
+            });
+
+            /* Purchases (jr_purchases) */
+            const purchases = readLS('jr_purchases').filter(inRange);
+            let totalPurchase = 0, purchaseDue = 0;
+            purchases.forEach(p => {
+                totalPurchase += parseFloat(p.total || p.grandTotal || 0);
+                purchaseDue   += parseFloat(p.paymentDue || p.due || 0);
+            });
+
+            /* Sale Returns (jr_sale_returns) */
+            const saleReturns = readLS('jr_sale_returns').filter(inRange);
+            let totalSellReturn = 0;
+            saleReturns.forEach(r => {
+                totalSellReturn += parseFloat(r.refund || r.total || 0);
+            });
+
+            /* Purchase Returns (jr_purchase_returns) */
+            const purchaseReturns = readLS('jr_purchase_returns').filter(inRange);
+            let totalPurchaseReturn = 0;
+            purchaseReturns.forEach(r => {
+                totalPurchaseReturn += parseFloat(r.refund || r.total || 0);
+            });
+
+            /* Expenses (jr_expenses) */
+            const expenses = readLS('jr_expenses').filter(inRange);
+            let totalExpense = 0;
+            expenses.forEach(e => {
+                totalExpense += parseFloat(e.amount || 0);
+            });
+
+            /* Net = Total Sales − Total Purchase − Expense */
+            const net = totalSales - totalPurchase - totalExpense;
+
+            /* Populate cards */
+            document.getElementById('stat-total-sales').textContent     = fmt(totalSales);
+            document.getElementById('stat-net').textContent              = fmt(net);
+            document.getElementById('stat-invoice-due').textContent      = fmt(invoiceDue);
+            document.getElementById('stat-sell-return').textContent       = fmt(totalSellReturn);
+            document.getElementById('stat-total-purchase').textContent    = fmt(totalPurchase);
+            document.getElementById('stat-purchase-due').textContent      = fmt(purchaseDue);
+            document.getElementById('stat-purchase-return').textContent   = fmt(totalPurchaseReturn);
+            document.getElementById('stat-expense').textContent           = fmt(totalExpense);
+        }
+
+        /* ============================================================
+           DATE  FILTER  UI
+           ============================================================ */
+        const filterBtn   = document.getElementById('filter-btn');
+        const filterPanel = document.getElementById('date-filter-panel');
+        const dfpFrom     = document.getElementById('dfp-from');
+        const dfpTo       = document.getElementById('dfp-to');
+        const dfpApply    = document.getElementById('dfp-apply');
+        const presets     = filterPanel.querySelectorAll('.dfp-preset');
+
+        /* Toggle panel */
+        filterBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            filterPanel.classList.toggle('open');
+        });
+        document.addEventListener('click', e => {
+            if (!filterPanel.contains(e.target) && e.target !== filterBtn) {
+                filterPanel.classList.remove('open');
+            }
+        });
+
+        /* Preset helpers */
+        function dayStart(d) { return d.toISOString().slice(0, 10); }
+        function getRange(key) {
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            let from, to;
+            switch (key) {
+                case 'today':
+                    from = to = dayStart(today);
+                    break;
+                case 'yesterday': {
+                    const y = new Date(today); y.setDate(y.getDate() - 1);
+                    from = to = dayStart(y);
+                    break;
+                }
+                case 'last7': {
+                    const d = new Date(today); d.setDate(d.getDate() - 6);
+                    from = dayStart(d); to = dayStart(today);
+                    break;
+                }
+                case 'last30': {
+                    const d = new Date(today); d.setDate(d.getDate() - 29);
+                    from = dayStart(d); to = dayStart(today);
+                    break;
+                }
+                case 'thisMonth': {
+                    const d = new Date(today.getFullYear(), today.getMonth(), 1);
+                    from = dayStart(d); to = dayStart(today);
+                    break;
+                }
+                case 'lastMonth': {
+                    const first = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                    const last  = new Date(today.getFullYear(), today.getMonth(), 0);
+                    from = dayStart(first); to = dayStart(last);
+                    break;
+                }
+                case 'thisYear': {
+                    const d = new Date(today.getFullYear(), 0, 1);
+                    from = dayStart(d); to = dayStart(today);
+                    break;
+                }
+                case 'all':
+                default:
+                    from = ''; to = '';
+                    break;
+            }
+            return { from, to };
+        }
+
+        let activeRange = 'today';
+
+        /* Update badge text on filter button */
+        function updateBadge(label) {
+            let badge = filterBtn.querySelector('.filter-badge');
+            if (!label) {
+                if (badge) badge.remove();
+                return;
+            }
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'filter-badge';
+                filterBtn.appendChild(badge);
+            }
+            badge.textContent = label;
+        }
+
+        /* Preset click */
+        presets.forEach(btn => {
+            btn.addEventListener('click', () => {
+                presets.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeRange = btn.dataset.range;
+                const { from, to } = getRange(activeRange);
+                dfpFrom.value = from;
+                dfpTo.value   = to;
+                loadStats(from, to);
+                updateBadge(activeRange === 'all' ? '' : btn.textContent);
+                filterPanel.classList.remove('open');
+            });
+        });
+
+        /* Custom date apply */
+        dfpApply.addEventListener('click', () => {
+            presets.forEach(b => b.classList.remove('active'));
+            const from = dfpFrom.value;
+            const to   = dfpTo.value;
+            loadStats(from, to);
+            if (from || to) {
+                updateBadge((from || '…') + ' → ' + (to || '…'));
+            } else {
+                updateBadge('');
+            }
+            filterPanel.classList.remove('open');
+        });
+
+        /* ============================================================
+           STOCK ALERT PRODUCTS GRID
+           ============================================================ */
+        function loadStockAlerts() {
+            const products = readLS('jr_products');
+            const tbody = document.getElementById('sa-tbody');
+            const countBadge = document.getElementById('sa-count');
+            const body = document.getElementById('sa-body');
+
+            /* Filter products that have manageStock enabled and
+               current stock <= alertQty (or stock is 0) */
+            const alertItems = products.filter(p => {
+                if (!p.manageStock) return false;
+                const stock = parseInt(p.quantity || p.qty || 0);
+                const alert = parseInt(p.alertQty || 0);
+                // Show if out of stock OR stock is at/below alert threshold
+                if (stock === 0) return true;
+                if (alert > 0 && stock <= alert) return true;
+                return false;
+            }).sort((a, b) => {
+                // Out of stock first, then by stock ascending
+                const sA = parseInt(a.quantity || a.qty || 0);
+                const sB = parseInt(b.quantity || b.qty || 0);
+                return sA - sB;
+            });
+
+            countBadge.textContent = alertItems.length;
+            // Hide count badge if 0, change color
+            if (alertItems.length === 0) {
+                countBadge.style.background = '#dcfce7';
+                countBadge.style.color = '#16a34a';
+            } else {
+                countBadge.style.background = '#fee2e2';
+                countBadge.style.color = '#dc2626';
+            }
+
+            if (alertItems.length === 0) {
+                tbody.innerHTML = '';
+                // Show "all good" message
+                body.innerHTML = `
+                    <div class="sa-empty">
+                        <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        All products are well-stocked! No stock alerts at this time.
+                    </div>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = alertItems.map((p, i) => {
+                const stock = parseInt(p.quantity || p.qty || 0);
+                const alert = parseInt(p.alertQty || 0);
+                const isOut = stock === 0;
+                const badge = isOut
+                    ? '<span class="sa-badge-out">Out of Stock</span>'
+                    : '<span class="sa-badge-low">Low Stock</span>';
+                const price = Number(p.price || 0).toLocaleString('en-US', { minimumFractionDigits: 2 });
+                return `<tr>
+                    <td>${i + 1}</td>
+                    <td><strong>${p.name || '—'}</strong></td>
+                    <td><span class="sa-sku">${p.sku || '—'}</span></td>
+                    <td style="font-weight:700;color:${isOut ? '#dc2626' : '#ca8a04'}">${stock}</td>
+                    <td>${alert || '—'}</td>
+                    <td>LKR ${price}</td>
+                    <td>${badge}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        /* ── Initial load: default to "Today" ── */
+        const init = getRange('today');
+        dfpFrom.value = init.from;
+        dfpTo.value   = init.to;
+        loadStats(init.from, init.to);
+        updateBadge('Today');
+        loadStockAlerts();
+    });
+
+    /* Submenu accordion */
+    function toggleMenu(id) {
+        const item = document.querySelector(`[data-menu="${id}"]`);
+        if (!item) return;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.menu-item.open').forEach(el => el.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+    }
+    </script>
+</body>
+</html>

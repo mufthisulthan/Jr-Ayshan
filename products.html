@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products — JR MARKETING (PVT) LTD</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230a5c2e'/><text x='50%25' y='55%25' font-size='13' font-weight='900' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'>JR</text></svg>">
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #eef1f8; min-height: 100vh; display: flex; flex-direction: column; }
+
+        /* NAVBAR */
+        .navbar { background: #0a5c2e; height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px 0 0; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 10px rgba(10,92,46,0.4); flex-shrink: 0; }
+        .navbar-left { display: flex; align-items: center; height: 100%; }
+        .nav-sidebar-toggle { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: rgba(255,255,255,0.8); transition: background 0.2s; flex-shrink: 0; }
+        .nav-sidebar-toggle:hover { background: rgba(255,255,255,0.1); }
+        .navbar-brand { display: flex; align-items: center; gap: 8px; color: #fff; font-weight: 800; font-size: 15px; letter-spacing: 0.5px; padding: 0 14px 0 8px; white-space: nowrap; }
+        .brand-dot { width: 9px; height: 9px; border-radius: 50%; background: #22c55e; display: inline-block; flex-shrink: 0; margin-left: 2px; }
+        .navbar-center { flex: 1; display: flex; align-items: center; justify-content: center; }
+        .nav-info-btn { width: 28px; height: 28px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.5); background: transparent; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .nav-info-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+        .navbar-right { display: flex; align-items: center; gap: 5px; }
+        .nav-icon-btn { width: 36px; height: 36px; border-radius: 8px; background: transparent; border: none; color: rgba(255,255,255,0.75); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s, color 0.2s; }
+        .nav-icon-btn:hover { background: rgba(255,255,255,0.12); color: white; }
+        .nav-pos-btn { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; padding: 0 12px; height: 34px; font-size: 13px; font-weight: 700; cursor: pointer; letter-spacing: 0.5px; transition: background 0.2s; }
+        .nav-pos-btn:hover { background: rgba(255,255,255,0.22); }
+        .nav-divider { width: 1px; height: 22px; background: rgba(255,255,255,0.2); margin: 0 4px; }
+        .nav-date { color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 600; padding: 0 4px; white-space: nowrap; }
+        .nav-bell { position: relative; }
+        .nav-bell-dot { position: absolute; top: 6px; right: 6px; width: 7px; height: 7px; background: #ef4444; border-radius: 50%; border: 1.5px solid #0a5c2e; display: none; }
+        .nav-user { display: flex; align-items: center; gap: 7px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; padding: 0 10px; height: 34px; color: white; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .nav-user:hover { background: rgba(255,255,255,0.2); }
+        .nav-user-avatar { width: 24px; height: 24px; border-radius: 50%; background: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; }
+
+        /* LAYOUT */
+        .layout { display: flex; flex: 1; min-height: calc(100vh - 52px); }
+
+        /* SIDEBAR */
+        .sidebar { width: 240px; background: #f8f9fc; border-right: 1px solid #dde3f0; flex-shrink: 0; overflow-y: auto; overflow-x: hidden; transition: width 0.28s ease; }
+        .sidebar.collapsed { width: 0; }
+        .sidebar-inner { padding: 6px 0 28px; }
+        .sidebar-menu { list-style: none; }
+        .menu-item { position: relative; }
+        .menu-link { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px 10px 14px; color: #374151; font-size: 13.5px; font-weight: 500; text-decoration: none; cursor: pointer; transition: background 0.15s, color 0.15s; border-left: 3px solid transparent; user-select: none; white-space: nowrap; }
+        .menu-link:hover { background: #dcfce7; color: #15803d; text-decoration: none; }
+        .menu-link.active { background: #dcfce7; color: #15803d; border-left-color: #16a34a; font-weight: 700; }
+        .menu-link-left { display: flex; align-items: center; gap: 10px; }
+        .menu-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #6b7280; }
+        .menu-link.active .menu-icon, .menu-link:hover .menu-icon { color: #16a34a; }
+        .menu-chevron { font-size: 10px; color: #9ca3af; transition: transform 0.2s; flex-shrink: 0; }
+        .menu-item.open > .menu-link .menu-chevron { transform: rotate(90deg); }
+        .submenu { display: none; background: #f0fdf4; list-style: none; }
+        .menu-item.open .submenu { display: block; }
+        .submenu-link { display: flex; align-items: center; gap: 8px; padding: 8px 16px 8px 40px; color: #4b5563; font-size: 12.5px; text-decoration: none; transition: color 0.15s, background 0.15s; cursor: pointer; white-space: nowrap; }
+        .submenu-link:hover { color: #15803d; background: #bbf7d0; text-decoration: none; }
+        .submenu-link.active { color: #15803d; background: #bbf7d0; font-weight: 600; }
+
+        /* MAIN */
+        .main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+        .content-header { background: #0a5c2e; padding: 22px 26px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+        .page-title { font-size: 24px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+        .content-body { padding: 24px; background: #eef1f8; flex: 1; }
+
+        /* TAB BAR */
+        .tab-bar { display: flex; gap: 4px; margin-bottom: 22px; background: #fff; padding: 6px; border-radius: 10px; box-shadow: 0 1px 4px rgba(10,17,114,.07); width: fit-content; }
+        .tab-btn { padding: 8px 20px; border: none; border-radius: 7px; font-size: 13px; font-weight: 600; color: #6b7280; background: none; cursor: pointer; transition: all .15s; white-space: nowrap; }
+        .tab-btn.active { background: linear-gradient(135deg, #0a5c2e 0%, #16a34a 100%); color: #fff; box-shadow: 0 2px 8px rgba(22,163,74,.3); }
+        .tab-btn:hover:not(.active) { background: #f0fdf4; color: #15803d; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* PRODUCT FORM CARD */
+        .form-card { background: #fff; border-radius: 14px; box-shadow: 0 2px 12px rgba(10,17,114,.08); padding: 28px 28px 24px; max-width: 900px; }
+        .form-section-title { font-size: 13px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1.5px solid #f3f4f6; }
+        .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .form-grid-1 { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+        .form-field { display: flex; flex-direction: column; gap: 5px; }
+        .form-label { font-size: 12px; font-weight: 600; color: #374151; }
+        .form-label .req { color: #ef4444; }
+        .info-badge { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; border-radius: 50%; background: linear-gradient(135deg, #0a5c2e, #16a34a); color: #fff; font-size: 10px; font-weight: 700; cursor: default; margin-left: 3px; vertical-align: middle; }
+        .form-input, .form-select, .form-textarea {
+            border: 1.5px solid #d1d5db; border-radius: 7px; padding: 0 12px; height: 40px;
+            font-size: 13px; color: #374151; background: #fff; outline: none; width: 100%; font-family: inherit;
+        }
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%236b7280' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 11px center; padding-right: 30px;
+        }
+        .form-textarea { height: auto; min-height: 120px; padding: 10px 12px; resize: vertical; line-height: 1.6; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,.12); outline: none; }
+        .form-input.error, .form-select.error { border-color: #ef4444; }
+        .field-error { font-size: 11px; color: #ef4444; display: none; margin-top: 1px; }
+        .field-error.show { display: block; }
+        .field-hint { font-size: 11px; color: #9ca3af; margin-top: 1px; }
+        .margin-badge { display: inline-flex; align-items: center; gap: 3px; padding: 1px 7px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+        .margin-badge.positive { background: #dcfce7; color: #15803d; }
+        .margin-badge.negative { background: #fee2e2; color: #dc2626; }
+        .margin-badge.zero     { background: #f3f4f6; color: #6b7280; }
+
+        /* Manage stock checkbox row */
+        .manage-stock-row { display: flex; align-items: flex-start; gap: 10px; background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 9px; padding: 12px 16px; margin-bottom: 16px; }
+        .manage-stock-row input[type="checkbox"] { width: 17px; height: 17px; accent-color: #16a34a; cursor: pointer; flex-shrink: 0; margin-top: 1px; }
+        .manage-stock-label { font-size: 13px; font-weight: 700; color: #166534; cursor: pointer; }
+        .manage-stock-hint { font-size: 11.5px; color: #6b7280; display: block; margin-top: 2px; }
+
+        /* Rich text editor */
+        .editor-wrap { border: 1.5px solid #d1d5db; border-radius: 8px; overflow: hidden; }
+        .editor-wrap:focus-within { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,.12); }
+        .editor-toolbar { background: #f9fafb; border-bottom: 1px solid #e5e7eb; padding: 6px 10px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+        .etb-btn { background: none; border: 1px solid transparent; border-radius: 4px; padding: 3px 8px; font-size: 12px; color: #374151; cursor: pointer; font-family: inherit; }
+        .etb-btn:hover { background: #e5e7eb; }
+        .etb-sep { width: 1px; height: 16px; background: #d1d5db; margin: 0 2px; }
+        .editor-content { min-height: 110px; padding: 10px 13px; font-size: 13px; color: #374151; outline: none; line-height: 1.6; }
+        .editor-content:empty:before { content: attr(data-placeholder); color: #9ca3af; pointer-events: none; }
+
+        /* Form footer buttons */
+        .form-footer { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 24px; padding-top: 18px; border-top: 1.5px solid #f3f4f6; }
+        .btn-reset { padding: 0 20px; height: 40px; border: 1.5px solid #d1d5db; background: #fff; border-radius: 8px; font-size: 13px; font-weight: 600; color: #374151; cursor: pointer; }
+        .btn-reset:hover { background: #f3f4f6; }
+        .btn-save { padding: 0 28px; height: 40px; border: none; background: linear-gradient(135deg, #0a5c2e 0%, #16a34a 100%); border-radius: 8px; font-size: 13px; font-weight: 700; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .btn-save:hover { opacity: .88; }
+
+        /* PRODUCTS LIST TABLE */
+        .list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
+        .search-bar { display: flex; gap: 10px; flex: 1; flex-wrap: wrap; }
+        .search-input { flex: 1; min-width: 180px; height: 38px; border: 1.5px solid #d1d5db; border-radius: 7px; padding: 0 12px; font-size: 13px; color: #374151; outline: none; background: #fff; }
+        .search-input:focus { border-color: #16a34a; }
+        .btn-add-new { display: flex; align-items: center; gap: 7px; padding: 0 18px; height: 38px; background: linear-gradient(135deg, #0a5c2e 0%, #16a34a 100%); border: none; border-radius: 8px; color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+        .btn-add-new:hover { opacity: .88; }
+        .table-wrap { background: #fff; border-radius: 12px; box-shadow: 0 1px 5px rgba(10,17,114,.07); overflow: hidden; }
+        .prod-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .prod-table thead tr { background: #f8f9fc; border-bottom: 2px solid #e5e7eb; }
+        .prod-table thead th { padding: 12px 14px; text-align: left; font-weight: 700; color: #374151; font-size: 12.5px; white-space: nowrap; }
+        .prod-table tbody tr { border-bottom: 1px solid #f3f4f6; transition: background .12s; }
+        .prod-table tbody tr:last-child { border-bottom: none; }
+        .prod-table tbody tr:hover { background: #f9fafb; }
+        .prod-table tbody td { padding: 11px 14px; color: #374151; vertical-align: middle; }
+        .sku-badge { font-size: 11.5px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+        .unit-badge { font-size: 11.5px; background: #f3f4f6; color: #374151; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
+        .stock-badge-on  { font-size: 11.5px; background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+        .stock-badge-off { font-size: 11.5px; background: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+        .action-btn { background: none; border: none; cursor: pointer; padding: 5px 7px; border-radius: 5px; color: #6b7280; transition: background .12s, color .12s; }
+        .action-btn:hover.del { color: #ef4444; background: #fee2e2; }
+        .empty-state { padding: 60px 20px; text-align: center; color: #9ca3af; }
+        .empty-state p { font-size: 14px; font-weight: 600; color: #6b7280; margin-top: 10px; }
+        .empty-state span { font-size: 12.5px; margin-top: 4px; display: block; }
+
+        /* ── EXCEL IMPORT BUTTON ── */
+        .btn-excel-import { display: flex; align-items: center; gap: 7px; padding: 0 16px; height: 38px; background: #fff; border: 1.5px solid #16a34a; border-radius: 8px; color: #15803d; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background .15s; }
+        .btn-excel-import:hover { background: #f0fdf4; }
+        .btn-excel-template { display: flex; align-items: center; gap: 7px; padding: 0 16px; height: 38px; background: #fff; border: 1.5px solid #6b7280; border-radius: 8px; color: #374151; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background .15s; }
+        .btn-excel-template:hover { background: #f3f4f6; }
+
+        /* ── IMPORT MODAL OVERLAY ── */
+        .xl-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 900; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .xl-overlay.open { display: flex; }
+        .xl-modal { background: #fff; border-radius: 16px; width: 100%; max-width: 1050px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.25); overflow: hidden; }
+        .xl-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; background: linear-gradient(135deg,#0a5c2e,#16a34a); color: #fff; flex-shrink: 0; }
+        .xl-header h3 { font-size: 17px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .xl-close { background: rgba(255,255,255,.2); border: none; color: #fff; width: 32px; height: 32px; border-radius: 8px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .xl-close:hover { background: rgba(255,255,255,.35); }
+        .xl-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+        .xl-drop-zone { border: 2.5px dashed #d1d5db; border-radius: 12px; padding: 36px 20px; text-align: center; cursor: pointer; transition: border-color .2s, background .2s; margin-bottom: 20px; }
+        .xl-drop-zone:hover, .xl-drop-zone.dragging { border-color: #16a34a; background: #f0fdf4; }
+        .xl-drop-zone svg { color: #9ca3af; margin-bottom: 10px; }
+        .xl-drop-zone.dragging svg { color: #16a34a; }
+        .xl-drop-title { font-size: 15px; font-weight: 700; color: #374151; margin-bottom: 4px; }
+        .xl-drop-hint { font-size: 12.5px; color: #6b7280; }
+        .xl-drop-hint span { color: #16a34a; font-weight: 600; cursor: pointer; }
+        .xl-file-input { display: none; }
+        /* Stats bar */
+        .xl-stats { display: flex; gap: 14px; margin-bottom: 16px; flex-wrap: wrap; }
+        .xl-stat { background: #f8f9fc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 16px; font-size: 12.5px; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 6px; }
+        .xl-stat.ok  { background: #d1fae5; border-color: #6ee7b7; color: #065f46; }
+        .xl-stat.err { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+        .xl-stat.warn{ background: #fef3c7; border-color: #fcd34d; color: #92400e; }
+        /* Data grid */
+        .xl-grid-wrap { border: 1.5px solid #e5e7eb; border-radius: 10px; overflow: auto; max-height: 360px; }
+        .xl-grid { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+        .xl-grid thead tr { background: #f8f9fc; position: sticky; top: 0; z-index: 2; }
+        .xl-grid thead th { padding: 9px 12px; text-align: left; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb; white-space: nowrap; font-size: 12px; }
+        .xl-grid tbody tr { border-bottom: 1px solid #f3f4f6; }
+        .xl-grid tbody tr:hover { background: #f9fafb; }
+        .xl-grid tbody tr.row-error { background: #fff5f5; }
+        .xl-grid tbody tr.row-error:hover { background: #fee2e2; }
+        .xl-grid tbody td { padding: 7px 10px; vertical-align: middle; }
+        .xl-grid td input, .xl-grid td select { border: 1.5px solid transparent; border-radius: 5px; padding: 3px 7px; font-size: 12px; width: 100%; min-width: 80px; font-family: inherit; background: transparent; color: #374151; outline: none; }
+        .xl-grid td input:focus, .xl-grid td select:focus { border-color: #16a34a; background: #fff; box-shadow: 0 0 0 2px rgba(22,163,74,.12); }
+        .xl-grid td.cell-error input, .xl-grid td.cell-error select { border-color: #ef4444; background: #fff5f5; }
+        .xl-grid td.cell-error input:focus { border-color: #ef4444; box-shadow: 0 0 0 2px rgba(239,68,68,.12); }
+        .cell-err-msg { font-size: 10.5px; color: #ef4444; display: block; margin-top: 1px; }
+        .row-num { color: #9ca3af; font-weight: 700; text-align: center; width: 36px; }
+        .row-del-btn { background: none; border: none; color: #d1d5db; cursor: pointer; padding: 3px 5px; border-radius: 4px; }
+        .row-del-btn:hover { color: #ef4444; background: #fee2e2; }
+        /* Footer */
+        .xl-footer { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-top: 1.5px solid #f3f4f6; flex-shrink: 0; gap: 10px; flex-wrap: wrap; }
+        .xl-footer-left { font-size: 12.5px; color: #6b7280; }
+        .xl-footer-right { display: flex; gap: 10px; }
+        .xl-btn-cancel { padding: 0 20px; height: 38px; border: 1.5px solid #d1d5db; border-radius: 8px; background: #fff; font-size: 13px; font-weight: 600; color: #374151; cursor: pointer; }
+        .xl-btn-cancel:hover { background: #f3f4f6; }
+        .xl-btn-import { display: flex; align-items: center; gap: 7px; padding: 0 22px; height: 38px; border: none; border-radius: 8px; background: linear-gradient(135deg,#0a5c2e,#16a34a); font-size: 13px; font-weight: 700; color: #fff; cursor: pointer; }
+        .xl-btn-import:hover { opacity: .88; }
+        .xl-btn-import:disabled { opacity: .45; cursor: not-allowed; }
+        /* Error legend */
+        .xl-legend { margin-top: 14px; display: flex; gap: 14px; flex-wrap: wrap; font-size: 11.5px; color: #6b7280; }
+        .xl-legend span { display: flex; align-items: center; gap: 5px; }
+        .xl-legend-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+
+        /* Toast override */
+        @media (max-width: 1100px) {
+            .sidebar { width: 200px; }
+        }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .sidebar.mobile-open { display: flex; flex-direction: column; position: fixed; left: 0; top: 52px; height: calc(100vh - 52px); z-index: 300; width: 240px; box-shadow: 4px 0 20px rgba(0,0,0,.2); }
+            .form-grid-3 { grid-template-columns: 1fr 1fr; }
+            .content-header { padding: 14px 16px; }
+            .content-body { padding: 14px; }
+            .page-title { font-size: 18px; }
+            .nav-date { display: none; }
+            .tab-bar { width: 100%; overflow-x: auto; }
+        }
+        @media (max-width: 500px) {
+            .form-grid-3, .form-grid-2 { grid-template-columns: 1fr; }
+            .form-card { padding: 16px; }
+            .header-actions { flex-wrap: wrap; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" role="navigation" aria-label="Top Navigation">
+        <div class="navbar-left">
+            <div class="nav-sidebar-toggle" id="sidebar-toggle" role="button" tabindex="0" aria-label="Toggle sidebar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" viewBox="0 0 24 24">
+                    <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </div>
+            <div class="navbar-brand">JR MARKETING (PVT) LTD <span class="brand-dot"></span></div>
+        </div>
+        <div class="navbar-center"></div>
+        <div class="navbar-right">
+            <button class="nav-pos-btn" title="Point of Sale" onclick="window.location.href='pos.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+                POS
+            </button>
+            <div class="nav-divider"></div>
+            <span class="nav-date" id="nav-date"></span>
+            <div class="nav-divider"></div>
+            <button class="nav-icon-btn nav-bell" title="Notifications">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span class="nav-bell-dot"></span>
+            </button>
+            <div class="nav-user" id="nav-user" role="button" tabindex="0">
+                <div class="nav-user-avatar" id="nav-avatar">A</div>
+                <span id="nav-username">Admin</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" viewBox="0 0 24 24">
+                    <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+            </div>
+        </div>
+    </nav>
+
+    <!-- LAYOUT -->
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar" role="complementary">
+            <div class="sidebar-inner">
+                <ul class="sidebar-menu">
+                    <li class="menu-item">
+                        <a href="dashboard.html" class="menu-link">
+                            <span class="menu-link-left">
+                                <span class="menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+                                Home
+                            </span>
+                        </a>
+                    </li>
+                    <li class="menu-item" data-menu="contacts">
+                        <div class="menu-link" onclick="toggleMenu('contacts')">
+                            <span class="menu-link-left">
+                                <span class="menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                                Contacts
+                            </span>
+                            <span class="menu-chevron">&#9654;</span>
+                        </div>
+                        <ul class="submenu">
+                            <li><a class="submenu-link" href="customers.html">&#8227;&nbsp; Customers</a></li>
+                            <li><a class="submenu-link" href="suppliers.html">&#8227;&nbsp; Suppliers</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item open" data-menu="products">
+                        <div class="menu-link active" onclick="toggleMenu('products')">
+                            <span class="menu-link-left">
+                                <span class="menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+                                Products
+                            </span>
+                            <span class="menu-chevron">&#9654;</span>
+                        </div>
+                        <ul class="submenu">
+                            <li><a class="submenu-link active" href="products.html">&#8227;&nbsp; Products List</a></li>
+                            <li><a class="submenu-link" href="products.html#add" onclick="switchTab('add'); return false;">&#8227;&nbsp; Add New Product</a></li>
+                            <li><a class="submenu-link" href="units.html">&#8227;&nbsp; Units</a></li>
+                            <li><a class="submenu-link" href="stock.html">&#8227;&nbsp; Stock</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item" data-menu="purchases">
+                        <div class="menu-link" onclick="toggleMenu('purchases')">
+                            <span class="menu-link-left">
+                                <span class="menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg></span>
+                                Purchases
+                            </span>
+                            <span class="menu-chevron">&#9654;</span>
+                        </div>
+                        <ul class="submenu">
+                            <li><a class="submenu-link" href="purchases.html">&#8227;&nbsp; Purchase List</a></li>
+                            <li><a class="submenu-link" href="purchases.html#add">&#8227;&nbsp; Add Purchase</a></li>
+                            <li><a class="submenu-link" href="purchases.html#return">&#8227;&nbsp; Purchase Return</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item" data-menu="sell">
+                        <div class="menu-link" onclick="toggleMenu('sell')">
+                            <span class="menu-link-left">
+                                <span class="menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>
+                                Sell
+                            </span>
+                            <span class="menu-chevron">&#9654;</span>
+                        </div>
+                        <ul class="submenu">
+                            <li><a class="submenu-link" href="sales.html">&#8227;&nbsp; All Sales</a></li>
+                            <li><a class="submenu-link" href="add-sale.html">&#8227;&nbsp; Add Sale</a></li>
+                            <li><a class="submenu-link" href="sale-return.html">&#8227;&nbsp; Sale Return</a></li>
+                            <li><a class="submenu-link" href="sales.html#quotations">&#8227;&nbsp; Quotations</a></li>
+                            <li><a class="submenu-link" href="sales.html#credit">&#8227;&nbsp; Credit Sales</a></li>
+                            <li><a class="submenu-link" href="sales.html#cheques">&#8227;&nbsp; Cheques</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item" data-menu="expenses">
+                        <div class="menu-link" onclick="toggleMenu('expenses')">
+                            <span class="menu-link-left">
+                                <span class="menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
+                                Expenses
+                            </span>
+                            <span class="menu-chevron">&#9654;</span>
+                        </div>
+                        <ul class="submenu">
+                            <li><a class="submenu-link" href="expenses.html">&#8227;&nbsp; Expense List</a></li>
+                            <li><a class="submenu-link" href="expenses.html#add">&#8227;&nbsp; Add Expense</a></li>
+                            <li><a class="submenu-link" href="expense-categories.html">&#8227;&nbsp; Expense Categories</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="payments.html" class="menu-link">
+                            <span class="menu-link-left">
+                                <span class="menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/><line x1="7" y1="15" x2="10" y2="15"/><line x1="13" y1="15" x2="17" y2="15"/></svg></span>
+                                Payments
+                            </span>
+                        </a>
+                    </li>
+                    <li class="menu-item" data-menu="reports">
+                        <div class="menu-link" onclick="toggleMenu('reports')">
+                            <span class="menu-link-left">
+                                <span class="menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+                                Reports
+                            </span>
+                            <span class="menu-chevron">&#9654;</span>
+                        </div>
+                        <ul class="submenu">
+                            <li><a class="submenu-link" href="profit-loss.html">&#8227;&nbsp; Profit / Loss</a></li>
+                            <li><a class="submenu-link" href="purchase-report.html">&#8227;&nbsp; Purchase Report</a></li>
+                            <li><a class="submenu-link" href="sales-report.html">&#8227;&nbsp; Sales Report</a></li>
+                            <li><a class="submenu-link" href="expense-report.html">&#8227;&nbsp; Expense Report</a></li>
+                            <li><a class="submenu-link" href="stock-report.html">&#8227;&nbsp; Stock Report</a></li>
+                            <li><a class="submenu-link" href="tax-report.html">&#8227;&nbsp; Tax Report</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main" role="main">
+            <div class="content-header">
+                <div class="page-title">
+                    <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                    Products
+                </div>
+            </div>
+
+            <div class="content-body">
+
+                <!-- TABS -->
+                <div class="tab-bar">
+                    <button class="tab-btn active" onclick="switchTab('list')" id="tab-list">Products List</button>
+                    <button class="tab-btn" onclick="switchTab('add')"  id="tab-add">+ Add New Product</button>
+                </div>
+
+                <!-- ── TAB: LIST ── -->
+                <div class="tab-panel active" id="panel-list">
+                    <div class="list-header">
+                        <div class="search-bar">
+                            <input type="text" class="search-input" id="search-input" placeholder="Search by name or SKU...">
+                        </div>
+                        <!-- Excel template download -->
+                        <button class="btn-excel-template" id="btn-download-template" title="Download Excel template">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download Template
+                        </button>
+                        <!-- Import from Excel -->
+                        <button class="btn-excel-import" id="btn-import-excel" title="Import products from Excel / CSV">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            Import Excel
+                        </button>
+                        <button class="btn-add-new" onclick="exportProductsXlsx()" style="background:linear-gradient(135deg,#2563eb,#3b82f6)">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Export Data
+                        </button>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="prod-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Product Name</th>
+                                    <th>SKU</th>
+                                    <th>Purchase Price (LKR)</th>
+                                    <th>Selling Price (LKR)</th>
+                                    <th>Unit</th>
+                                    <th>Stock</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-tbody"></tbody>
+                        </table>
+                        <div class="empty-state" id="empty-state" style="display:none;">
+                            <svg width="48" height="48" fill="none" stroke="#d1d5db" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                            <p>No products found</p>
+                            <span>Add your first product using the form above.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── TAB: ADD ── -->
+                <div class="tab-panel" id="panel-add">
+                    <div class="form-card">
+                        <div class="form-section-title">Product Information</div>
+
+                        <div class="form-grid-2">
+                            <div class="form-field">
+                                <label class="form-label" for="f-name">Product Name <span class="req">*</span></label>
+                                <input type="text" id="f-name" class="form-input" placeholder="e.g. Milo 400g">
+                                <span class="field-error" id="err-name">Product name is required.</span>
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label" for="f-sku">
+                                    SKU <span class="info-badge" title="Stock Keeping Unit — unique product identifier">i</span>
+                                </label>
+                                <input type="text" id="f-sku" class="form-input" placeholder="Auto-generated if empty">
+                                <span class="field-hint">Leave blank to auto-generate</span>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-field">
+                                <label class="form-label" for="f-buying-price">Buying Price (LKR)</label>
+                                <input type="number" id="f-buying-price" class="form-input" placeholder="0.00" min="0" step="0.01">
+                                <span class="field-hint">Cost price / purchase price</span>
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label" for="f-price">
+                                    Selling Price (LKR) <span class="req">*</span>
+                                    <span class="margin-badge" id="margin-badge" style="display:none;"></span>
+                                </label>
+                                <input type="number" id="f-price" class="form-input" placeholder="0.00" min="0" step="0.01">
+                                <span class="field-error" id="err-price">A valid selling price is required.</span>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-field">
+                                <label class="form-label" for="f-barcode">Barcode Type <span class="req">*</span></label>
+                                <div style="display:flex;gap:6px;align-items:center">
+                                    <select id="f-barcode" class="form-select" disabled style="background:#f9fafb;color:#6b7280;flex:1">
+                                        <option value="">— Select Barcode —</option>
+                                        <option value="C128" selected>Code 128 (C128)</option>
+                                        <option value="C39">Code 39 (C39)</option>
+                                        <option value="EAN13">EAN-13</option>
+                                        <option value="EAN8">EAN-8</option>
+                                        <option value="UPCA">UPC-A</option>
+                                        <option value="UPCE">UPC-E</option>
+                                    </select>
+                                    <button type="button" onclick="document.getElementById('f-barcode').disabled=false;document.getElementById('f-barcode').style.background='#fff';document.getElementById('f-barcode').style.color='#374151';" style="height:38px;padding:0 12px;border:1.5px solid #d1d5db;border-radius:8px;background:#fff;color:#6b7280;cursor:pointer;font-size:12px;white-space:nowrap" title="Edit barcode type">✏️ Edit</button>
+                                </div>
+                                <span class="field-error" id="err-barcode">Barcode type is required.</span>
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label" for="f-unit">Unit <span class="req">*</span></label>
+                                <div style="display:flex;gap:6px;align-items:center">
+                                    <select id="f-unit" class="form-select" disabled style="background:#f9fafb;color:#6b7280;flex:1">
+                                        <option value="">— Select Unit —</option>
+                                        <option value="Pieces" selected>Pieces</option>
+                                        <option value="Boxes">Boxes</option>
+                                        <option value="Rolls">Rolls</option>
+                                    </select>
+                                    <button type="button" onclick="document.getElementById('f-unit').disabled=false;document.getElementById('f-unit').style.background='#fff';document.getElementById('f-unit').style.color='#374151';" style="height:38px;padding:0 12px;border:1.5px solid #d1d5db;border-radius:8px;background:#fff;color:#6b7280;cursor:pointer;font-size:12px;white-space:nowrap" title="Edit unit">✏️ Edit</button>
+                                </div>
+                                <span class="field-error" id="err-unit">Unit is required.</span>
+                            </div>
+                        </div>
+
+                        <div class="manage-stock-row">
+                            <input type="checkbox" id="f-manage-stock" checked>
+                            <div>
+                                <label class="manage-stock-label" for="f-manage-stock">Manage Stock?</label>
+                                <span class="manage-stock-hint">Enable stock tracking and alert quantity for this product</span>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-1" id="stock-fields">
+                            <div class="form-field">
+                                <label class="form-label" for="f-alert-qty">Alert Quantity</label>
+                                <input type="number" id="f-alert-qty" class="form-input" placeholder="e.g. 5" min="0">
+                                <span class="field-hint">Warn when stock falls below this number</span>
+                            </div>
+                        </div>
+                        <div id="no-stock-weight" style="display:none;"></div>
+
+                        <div class="form-section-title" style="margin-top:8px;">Product Description</div>
+                        <div class="editor-wrap">
+                            <div class="editor-toolbar">
+                                <button type="button" class="etb-btn" onclick="document.execCommand('bold')" title="Bold"><b>B</b></button>
+                                <button type="button" class="etb-btn" onclick="document.execCommand('italic')" title="Italic"><i>I</i></button>
+                                <button type="button" class="etb-btn" onclick="document.execCommand('underline')" title="Underline"><u>U</u></button>
+                                <span class="etb-sep"></span>
+                                <button type="button" class="etb-btn" onclick="document.execCommand('insertUnorderedList')">• List</button>
+                                <button type="button" class="etb-btn" onclick="document.execCommand('justifyLeft')">≡L</button>
+                                <button type="button" class="etb-btn" onclick="document.execCommand('justifyCenter')">≡C</button>
+                            </div>
+                            <div class="editor-content" id="f-description" contenteditable="true" spellcheck="true" data-placeholder="Enter product description..."></div>
+                        </div>
+
+                        <div class="form-footer">
+                            <button class="btn-reset" onclick="resetForm()">Reset</button>
+                            <button class="btn-save" id="save-btn">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                                Save Product
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ═══════════════════ EXCEL IMPORT MODAL ═══════════════════ -->
+    <div class="xl-overlay" id="xl-overlay" role="dialog" aria-modal="true" aria-labelledby="xl-title">
+        <div class="xl-modal">
+
+            <div class="xl-header">
+                <h3 id="xl-title">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                    Import Products from Excel
+                </h3>
+                <button class="xl-close" id="xl-close-btn" title="Close">✕</button>
+            </div>
+
+            <div class="xl-body">
+
+                <!-- Drop Zone (shown when no file loaded) -->
+                <div class="xl-drop-zone" id="xl-drop-zone">
+                    <input type="file" class="xl-file-input" id="xl-file-input" accept=".xlsx,.xls,.csv">
+                    <svg width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/>
+                        <line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/>
+                    </svg>
+                    <div class="xl-drop-title">Drop your Excel / CSV file here</div>
+                    <div class="xl-drop-hint">or <span id="xl-browse-link">browse to upload</span> &nbsp;·&nbsp; Supports .xlsx, .xls, .csv</div>
+                </div>
+
+                <!-- Stats (shown after parse) -->
+                <div class="xl-stats" id="xl-stats" style="display:none;"></div>
+
+                <!-- Data Grid (shown after parse) -->
+                <div class="xl-grid-wrap" id="xl-grid-wrap" style="display:none;">
+                    <table class="xl-grid" id="xl-grid">
+                        <thead id="xl-grid-head"></thead>
+                        <tbody id="xl-grid-body"></tbody>
+                    </table>
+                </div>
+
+                <div class="xl-legend" id="xl-legend" style="display:none;">
+                    <span><span class="xl-legend-dot" style="background:#fca5a5;"></span> Required field missing</span>
+                    <span><span class="xl-legend-dot" style="background:#fcd34d;"></span> Auto-value will be assigned</span>
+                    <span><span class="xl-legend-dot" style="background:#d1fae5;"></span> Valid row ready to import</span>
+                </div>
+
+            </div>
+
+            <div class="xl-footer">
+                <div class="xl-footer-left" id="xl-footer-info">Select a file to preview rows before importing.</div>
+                <div class="xl-footer-right">
+                    <button class="xl-btn-cancel" id="xl-btn-cancel">Cancel</button>
+                    <button class="xl-btn-import" id="xl-btn-import" disabled>
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                        Import Products
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- ═══════════════════ /EXCEL IMPORT MODAL ═══════════════════ -->
+
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/toast.js"></script>
+    <!-- SheetJS for real Excel read/write -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        Auth.requireAuth();
+
+        /* User info */
+        const session = Auth.getSession();
+        if (session && session.user) {
+            const name = session.user.name || session.user.username;
+            document.getElementById('nav-username').textContent = name;
+            document.getElementById('nav-avatar').textContent   = name.charAt(0).toUpperCase();
+        }
+
+        /* Date */
+        const now = new Date();
+        document.getElementById('nav-date').textContent =
+            `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+
+        /* Sidebar toggle */
+        document.getElementById('sidebar-toggle').addEventListener('click', () => {
+            const sb = document.getElementById('sidebar');
+            if (window.innerWidth <= 768) {
+                sb.classList.toggle('mobile-open');
+            } else {
+                sb.classList.toggle('collapsed');
+            }
+        });
+
+        /* Logout */
+        document.getElementById('nav-user').addEventListener('click', () => {
+            if (confirm('Do you want to logout?')) { Toast.info('Logging out...'); setTimeout(() => Auth.logout(), 600); }
+        });
+
+        /* Hash routing: #add opens Add tab */
+        function handleHash() {
+            if (window.location.hash === '#add') {
+                switchTab('add');
+                history.replaceState(null, '', window.location.pathname);
+            }
+        }
+        handleHash();
+        window.addEventListener('hashchange', handleHash);
+
+        /* Manage Stock toggle */
+        document.getElementById('f-manage-stock').addEventListener('change', function () {
+            document.getElementById('stock-fields').style.display    = this.checked ? 'grid' : 'none';
+            document.getElementById('no-stock-weight').style.display = this.checked ? 'none' : 'grid';
+        });
+
+        /* Search */
+        document.getElementById('search-input').addEventListener('input', renderList);
+
+        /* Save */
+        document.getElementById('save-btn').addEventListener('click', saveProduct);
+
+        renderList();
+    });
+
+    function switchTab(name) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('tab-'   + name).classList.add('active');
+        document.getElementById('panel-' + name).classList.add('active');
+    }
+
+    function resetForm() {
+        ['f-name','f-sku','f-buying-price','f-price','f-alert-qty'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('f-barcode').value  = 'C128';
+        document.getElementById('f-barcode').disabled = true;
+        document.getElementById('f-barcode').style.background = '#f9fafb';
+        document.getElementById('f-barcode').style.color = '#6b7280';
+        document.getElementById('f-unit').value     = 'Pieces';
+        document.getElementById('f-unit').disabled = true;
+        document.getElementById('f-unit').style.background = '#f9fafb';
+        document.getElementById('f-unit').style.color = '#6b7280';
+        document.getElementById('f-manage-stock').checked = true;
+        document.getElementById('f-description').innerHTML = '';
+        document.getElementById('stock-fields').style.display    = 'grid';
+        document.getElementById('no-stock-weight').style.display = 'none';
+        ['f-name','f-price','f-barcode','f-unit'].forEach(id => document.getElementById(id).classList.remove('error'));
+        ['err-name','err-price','err-barcode','err-unit'].forEach(id => document.getElementById(id).classList.remove('show'));
+    }
+
+    function saveProduct() {
+        let valid = true;
+        function flag(inputId, errId, bad) {
+            document.getElementById(inputId).classList.toggle('error', bad);
+            document.getElementById(errId).classList.toggle('show', bad);
+            if (bad) valid = false;
+        }
+        flag('f-name',    'err-name',    !document.getElementById('f-name').value.trim());
+        flag('f-price',   'err-price',   !document.getElementById('f-price').value || parseFloat(document.getElementById('f-price').value) < 0);
+        // Barcode and Unit have defaults so no need to flag if they keep defaults
+        if (!valid) return;
+
+        const ms = document.getElementById('f-manage-stock').checked;
+        let sku   = document.getElementById('f-sku').value.trim() || ('SKU-' + Date.now().toString(36).toUpperCase());
+
+        const record = {
+            id:          'PRD-' + Date.now(),
+            name:        document.getElementById('f-name').value.trim(),
+            sku,
+            buyingPrice: parseFloat(document.getElementById('f-buying-price').value) || 0,
+            price:       parseFloat(document.getElementById('f-price').value),
+            barcodeType: document.getElementById('f-barcode').value || 'C128',
+            unit:        document.getElementById('f-unit').value || 'Pieces',
+            manageStock: ms,
+            alertQty:    ms ? (parseInt(document.getElementById('f-alert-qty').value) || null) : null,
+            description: document.getElementById('f-description').innerHTML.trim(),
+            date:        new Date().toISOString()
+        };
+
+        const all = JSON.parse(localStorage.getItem('jr_products') || '[]');
+        all.unshift(record);
+        localStorage.setItem('jr_products', JSON.stringify(all));
+
+        Toast.success(`Product "${record.name}" saved! SKU: ${record.sku}`);
+        resetForm();
+        switchTab('list');
+        renderList();
+    }
+
+    function renderList() {
+        const query  = (document.getElementById('search-input').value || '').trim().toLowerCase();
+        const all    = JSON.parse(localStorage.getItem('jr_products') || '[]');
+        const items  = query ? all.filter(p => p.name.toLowerCase().includes(query) || (p.sku||'').toLowerCase().includes(query)) : all;
+
+        const tbody  = document.getElementById('products-tbody');
+        const empty  = document.getElementById('empty-state');
+
+        if (items.length === 0) {
+            tbody.innerHTML = '';
+            empty.style.display = 'block';
+            return;
+        }
+        empty.style.display = 'none';
+        tbody.innerHTML = items.map((p, i) => `
+            <tr>
+                <td>${i + 1}</td>
+                <td><strong>${p.name}</strong></td>
+                <td><span class="sku-badge">${p.sku}</span></td>
+                <td>LKR ${Number(p.buyingPrice||0).toLocaleString('en-LK', {minimumFractionDigits:2})}</td>
+                <td><strong>LKR ${Number(p.price).toLocaleString('en-LK', {minimumFractionDigits:2})}</strong></td>
+                <td><span class="unit-badge">${p.unit}</span></td>
+                <td>${p.manageStock ? `<span class="stock-badge-on">Managed</span>` : `<span class="stock-badge-off">Unmanaged</span>`}</td>
+                <td class="date-cell">${new Date(p.date).toLocaleDateString('en-GB')}</td>
+                <td style="white-space:nowrap">
+                    <button class="action-btn" title="Edit" onclick="openEditProduct('${p.id}')" style="background:#dcfce7;color:#16a34a;margin-right:4px">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                    <button class="action-btn del" title="Delete" onclick="deleteProduct('${p.id}')">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function deleteProduct(id) {
+        if (!confirm('Delete this product?')) return;
+        const all = JSON.parse(localStorage.getItem('jr_products') || '[]');
+        localStorage.setItem('jr_products', JSON.stringify(all.filter(p => p.id !== id)));
+        Toast.success('Product deleted.');
+        renderList();
+    }
+
+    function toggleMenu(id) {
+        const item = document.querySelector(`[data-menu="${id}"]`);
+        if (!item) return;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.menu-item.open').forEach(el => el.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       EXCEL IMPORT / TEMPLATE  (uses SheetJS)
+    ═══════════════════════════════════════════════════════ */
+
+    /* ── Column definitions (order = template column order) ── */
+    const XL_COLS = [
+        { key: 'name',        label: 'Product Name',      required: true,  type: 'text',
+          aliases: ['name','product name','product_name','item name','item'] },
+        { key: 'sku',         label: 'SKU',               required: false, type: 'text',
+          aliases: ['sku','sku (leave blank to auto generate sku)','product sku','item code','barcode'] },
+        { key: 'price',       label: 'Selling Price',     required: true,  type: 'number',
+          aliases: ['selling price','price','sell price','sale price','unit price','selling_price'] },
+        { key: 'barcodeType', label: 'Barcode Type',      required: true,  type: 'select',
+          options: ['C128','C39','EAN13','EAN8','UPCA','UPCE'],
+          aliases: ['barcode type','barcode_type','code type'] },
+        { key: 'unit',        label: 'Unit',              required: true,  type: 'select',
+          options: ['Pieces','Boxes','Rolls','PCS','Kg','Ltr','Mtr','Set','Pack','Pair','Dozen'],
+          aliases: ['unit','uom','unit of measure'] },
+        { key: 'manageStock', label: 'Manage Stock',      required: false, type: 'select',
+          options: ['Yes','No'],
+          aliases: ['manage stock','manage stock (1=yes 0=no)','stock','manage_stock'] },
+        { key: 'alertQty',    label: 'Alert Quantity',    required: false, type: 'number',
+          aliases: ['alert quantity','alert qty','alert_quantity','reorder level'] },
+    ];
+
+    /* Parsed rows cache */
+    let xlRows = [];
+
+    /* ── Download Template ── */
+    document.getElementById('btn-download-template').addEventListener('click', () => {
+        if (typeof XLSX === 'undefined') { Toast.warning('SheetJS not loaded yet. Check your internet connection.'); return; }
+
+        const headers = XL_COLS.map(c => c.label);
+        const sample  = [
+            ['Milo 400g', 'MLT400', 980, 'C128', 'Pieces', 'Yes', 5],
+            ['Anchor Milk Powder 400g', '', 1250, 'EAN13', 'Pieces', 'Yes', 3],
+            ['Sunlight Soap Bar', '', 85, 'C128', 'Pieces', 'No', ''],
+        ];
+
+        const ws = XLSX.utils.aoa_to_sheet([headers, ...sample]);
+
+        /* Column widths */
+        ws['!cols'] = [
+            {wch:28},{wch:14},{wch:14},{wch:14},{wch:12},{wch:14},{wch:14}
+        ];
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Products');
+
+        /* Info sheet */
+        const info = [
+            ['Field','Required','Accepted Values'],
+            ...XL_COLS.map(c => [
+                c.label,
+                c.required ? 'Yes' : 'No',
+                c.options ? c.options.join(', ') : (c.type === 'number' ? 'Number' : 'Any text')
+            ])
+        ];
+        const wsInfo = XLSX.utils.aoa_to_sheet(info);
+        wsInfo['!cols'] = [{wch:22},{wch:10},{wch:50}];
+        XLSX.utils.book_append_sheet(wb, wsInfo, 'Column Guide');
+
+        XLSX.writeFile(wb, 'JR_Marketing_Products_Template.xlsx');
+        Toast.success('Template downloaded!');
+    });
+
+    /* ── Open Import Modal ── */
+    document.getElementById('btn-import-excel').addEventListener('click', openXlModal);
+
+    function openXlModal() {
+        resetXlModal();
+        document.getElementById('xl-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeXlModal() {
+        document.getElementById('xl-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+        resetXlModal();
+    }
+
+    function resetXlModal() {
+        xlRows = [];
+        document.getElementById('xl-drop-zone').style.display  = '';
+        document.getElementById('xl-stats').style.display      = 'none';
+        document.getElementById('xl-grid-wrap').style.display  = 'none';
+        document.getElementById('xl-legend').style.display     = 'none';
+        document.getElementById('xl-stats').innerHTML          = '';
+        document.getElementById('xl-grid-body').innerHTML      = '';
+        document.getElementById('xl-btn-import').disabled      = true;
+        document.getElementById('xl-footer-info').textContent  = 'Select a file to preview rows before importing.';
+        document.getElementById('xl-file-input').value         = '';
+    }
+
+    document.getElementById('xl-close-btn').addEventListener('click', closeXlModal);
+    document.getElementById('xl-btn-cancel').addEventListener('click', closeXlModal);
+    document.getElementById('xl-overlay').addEventListener('click', e => {
+        if (e.target === document.getElementById('xl-overlay')) closeXlModal();
+    });
+
+    /* ── Browse link ── */
+    document.getElementById('xl-browse-link').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('xl-file-input').click();
+    });
+
+    /* ── Click on drop zone ── */
+    document.getElementById('xl-drop-zone').addEventListener('click', () => {
+        document.getElementById('xl-file-input').click();
+    });
+
+    /* ── Drag & drop ── */
+    const dropZone = document.getElementById('xl-drop-zone');
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragging'); });
+    dropZone.addEventListener('dragleave', ()  => dropZone.classList.remove('dragging'));
+    dropZone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropZone.classList.remove('dragging');
+        const file = e.dataTransfer.files[0];
+        if (file) processXlFile(file);
+    });
+
+    /* ── File input change ── */
+    document.getElementById('xl-file-input').addEventListener('change', function() {
+        if (this.files[0]) processXlFile(this.files[0]);
+    });
+
+    /* ── Parse file using SheetJS ── */
+    function processXlFile(file) {
+        if (typeof XLSX === 'undefined') { Toast.error('SheetJS library not loaded. Check internet.'); return; }
+
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (!['xlsx','xls','csv'].includes(ext)) {
+            Toast.warning('Please upload an .xlsx, .xls or .csv file.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = new Uint8Array(e.target.result);
+                const wb   = XLSX.read(data, { type: 'array' });
+                const ws   = wb.Sheets[wb.SheetNames[0]];
+                const raw  = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+
+                if (!raw || raw.length < 2) {
+                    Toast.warning('The file appears to be empty or has no data rows.');
+                    return;
+                }
+
+                /* Map header row → column keys */
+                const headerRow = raw[0].map(h => String(h).trim().toLowerCase());
+                const colMap    = {}; // xlCol.key → fileColumnIndex
+                XL_COLS.forEach(col => {
+                    const idx = headerRow.findIndex(h =>
+                        h === col.label.toLowerCase() ||
+                        h === col.key.toLowerCase() ||
+                        (col.aliases && col.aliases.some(a => h === a.toLowerCase() || h.startsWith(a.toLowerCase())))
+                    );
+                    if (idx !== -1) colMap[col.key] = idx;
+                });
+
+                /* Build rows — normalize values from legacy systems */
+                xlRows = raw.slice(1).filter(r => r.some(c => String(c).trim() !== '')).map((r, i) => {
+                    const row = { _idx: i + 2, _errors: {} };
+                    XL_COLS.forEach(col => {
+                        let v = colMap[col.key] !== undefined ? String(r[colMap[col.key]] ?? '').trim() : '';
+
+                        /* Normalize legacy values */
+                        if (col.key === 'manageStock') {
+                            if (v === '1') v = 'Yes';
+                            else if (v === '0') v = 'No';
+                        }
+                        if (col.key === 'unit') {
+                            const unitMap = { 'pcs':'Pieces', 'pc':'Pieces', 'piece':'Pieces', 'box':'Boxes', 'roll':'Rolls',
+                                              'kg':'Kg', 'ltr':'Ltr', 'mtr':'Mtr', 'set':'Set', 'pack':'Pack', 'pair':'Pair', 'dozen':'Dozen' };
+                            const lower = v.toLowerCase();
+                            if (unitMap[lower]) v = unitMap[lower];
+                        }
+                        if (col.key === 'barcodeType' && v === '') v = 'C128'; /* default barcode */
+
+                        row[col.key] = v;
+                    });
+                    return row;
+                });
+
+                validateAllRows();
+                renderXlGrid();
+                document.getElementById('xl-drop-zone').style.display = 'none';
+
+            } catch(err) {
+                Toast.error('Could not parse the file: ' + err.message);
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    /* ── Validate a single row, writing errors into row._errors ── */
+    function validateRow(row) {
+        row._errors = {};
+        XL_COLS.forEach(col => {
+            const v = (row[col.key] || '').trim();
+            if (col.required && v === '') {
+                row._errors[col.key] = 'Required';
+            } else if (col.type === 'number' && v !== '' && (isNaN(parseFloat(v)) || parseFloat(v) < 0)) {
+                row._errors[col.key] = 'Must be a positive number';
+            } else if (col.options && v !== '' && !col.options.map(o=>o.toLowerCase()).includes(v.toLowerCase())) {
+                row._errors[col.key] = 'Invalid value';
+            }
+        });
+        return Object.keys(row._errors).length === 0;
+    }
+
+    function validateAllRows() { xlRows.forEach(r => validateRow(r)); }
+
+    /* ── Render the data grid ── */
+    function renderXlGrid() {
+        const totalRows  = xlRows.length;
+        const errorRows  = xlRows.filter(r => Object.keys(r._errors).length > 0).length;
+        const validRows  = totalRows - errorRows;
+
+        /* Stats */
+        const statsEl = document.getElementById('xl-stats');
+        statsEl.innerHTML = `
+            <div class="xl-stat ok"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> ${validRows} valid row${validRows !== 1 ? 's' : ''}</div>
+            ${errorRows > 0 ? `<div class="xl-stat err"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ${errorRows} row${errorRows !== 1 ? 's' : ''} with errors</div>` : ''}
+            <div class="xl-stat"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg> ${totalRows} total rows</div>
+        `;
+        statsEl.style.display = 'flex';
+
+        /* Header */
+        document.getElementById('xl-grid-head').innerHTML = `
+            <tr>
+                <th class="row-num">#</th>
+                ${XL_COLS.map(c => `<th>${c.label}${c.required ? ' <span style="color:#ef4444">*</span>' : ''}</th>`).join('')}
+                <th></th>
+            </tr>
+        `;
+
+        /* Body */
+        document.getElementById('xl-grid-body').innerHTML = xlRows.map((row, ri) => {
+            const hasErr  = Object.keys(row._errors).length > 0;
+            const cells   = XL_COLS.map(col => {
+                const cellErr = row._errors[col.key];
+                const cls     = cellErr ? 'cell-error' : '';
+                let input;
+                if (col.options) {
+                    input = `<select onchange="xlCellChange(${ri},'${col.key}',this.value)">
+                        <option value="">— Select —</option>
+                        ${col.options.map(o => `<option value="${o}" ${row[col.key].toLowerCase() === o.toLowerCase() ? 'selected' : ''}>${o}</option>`).join('')}
+                    </select>`;
+                } else {
+                    input = `<input type="${col.type === 'number' ? 'number' : 'text'}" value="${escHtml(row[col.key])}" ${col.type === 'number' ? 'min="0" step="0.01"' : ''} onchange="xlCellChange(${ri},'${col.key}',this.value)">`;
+                }
+                return `<td class="${cls}">${input}${cellErr ? `<span class="cell-err-msg">${cellErr}</span>` : ''}</td>`;
+            }).join('');
+            return `<tr class="${hasErr ? 'row-error' : ''}" id="xl-row-${ri}">
+                <td class="row-num">${ri + 1}</td>
+                ${cells}
+                <td><button class="row-del-btn" title="Remove row" onclick="xlDeleteRow(${ri})">✕</button></td>
+            </tr>`;
+        }).join('');
+
+        document.getElementById('xl-grid-wrap').style.display = '';
+        document.getElementById('xl-legend').style.display    = 'flex';
+
+        updateXlImportBtn();
+    }
+
+    /* ── Cell edit callback ── */
+    window.xlCellChange = function(ri, key, value) {
+        xlRows[ri][key] = value.trim();
+        validateRow(xlRows[ri]);
+        /* Re-render just this row */
+        const hasErr = Object.keys(xlRows[ri]._errors).length > 0;
+        const tr = document.getElementById('xl-row-' + ri);
+        if (!tr) return;
+        tr.className = hasErr ? 'row-error' : '';
+        XL_COLS.forEach((col, ci) => {
+            const td = tr.cells[ci + 1]; // +1 for row-num col
+            if (!td) return;
+            const cellErr = xlRows[ri]._errors[col.key];
+            td.className = cellErr ? 'cell-error' : '';
+            let errSpan = td.querySelector('.cell-err-msg');
+            if (cellErr) {
+                if (!errSpan) { errSpan = document.createElement('span'); errSpan.className = 'cell-err-msg'; td.appendChild(errSpan); }
+                errSpan.textContent = cellErr;
+            } else if (errSpan) {
+                errSpan.remove();
+            }
+        });
+        updateXlImportBtn();
+    };
+
+    /* ── Delete a row from grid ── */
+    window.xlDeleteRow = function(ri) {
+        xlRows.splice(ri, 1);
+        if (xlRows.length === 0) { resetXlModal(); document.getElementById('xl-drop-zone').style.display = ''; return; }
+        renderXlGrid();
+    };
+
+    /* ── Update the Import button state ── */
+    function updateXlImportBtn() {
+        const validRows = xlRows.filter(r => Object.keys(r._errors).length === 0).length;
+        const btn = document.getElementById('xl-btn-import');
+        btn.disabled = validRows === 0;
+        const errorRows = xlRows.length - validRows;
+        document.getElementById('xl-footer-info').textContent =
+            validRows === 0
+                ? 'Fix all errors before importing.'
+                : errorRows > 0
+                    ? `${validRows} valid row${validRows !== 1 ? 's' : ''} will be imported. ${errorRows} row${errorRows !== 1 ? 's' : ''} with errors will be skipped.`
+                    : `${validRows} product${validRows !== 1 ? 's' : ''} ready to import.`;
+    }
+
+    /* ── Confirm import ── */
+    document.getElementById('xl-btn-import').addEventListener('click', () => {
+        const validRows = xlRows.filter(r => Object.keys(r._errors).length === 0);
+        if (validRows.length === 0) return;
+
+        const existing = JSON.parse(localStorage.getItem('jr_products') || '[]');
+        const now      = new Date().toISOString();
+
+        const newRecords = validRows.map(row => {
+            const ms = (row.manageStock || 'yes').toLowerCase() !== 'no';
+            return {
+                id:          'PRD-' + Date.now() + '-' + Math.random().toString(36).slice(2,7),
+                name:        row.name.trim(),
+                sku:         row.sku.trim() || ('SKU-' + Date.now().toString(36).toUpperCase()),
+                price:       parseFloat(row.price) || 0,
+                barcodeType: row.barcodeType || 'C128',
+                unit:        row.unit || 'Pieces',
+                manageStock: ms,
+                alertQty:    ms && row.alertQty ? (parseInt(row.alertQty) || null) : null,
+                description: '',
+                date:        now,
+                importedViaExcel: true
+            };
+        });
+
+        /* Prepend new records */
+        const merged = [...newRecords, ...existing];
+        localStorage.setItem('jr_products', JSON.stringify(merged));
+
+        Toast.success(`${newRecords.length} product${newRecords.length !== 1 ? 's' : ''} imported successfully!`);
+        closeXlModal();
+        renderList();
+        switchTab('list');
+    });
+
+    /* ── HTML escape helper ── */
+    function escHtml(str) {
+        return String(str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       EXPORT PRODUCTS AS XLSX
+    ═══════════════════════════════════════════════════════ */
+    function exportProductsXlsx() {
+        if (typeof XLSX === 'undefined') { Toast.warning('SheetJS not loaded yet. Check your internet connection.'); return; }
+        const all = JSON.parse(localStorage.getItem('jr_products') || '[]');
+        if (!all.length) { Toast.warning('No products to export.'); return; }
+        const headers = ['Product Name','SKU','Purchase Price','Selling Price','Barcode Type','Unit','Manage Stock','Alert Qty','Date'];
+        const rows = all.map(p => [
+            p.name, p.sku, p.buyingPrice||0, p.price, p.barcodeType||'C128', p.unit||'Pieces',
+            p.manageStock ? 'Yes' : 'No', p.alertQty||'', new Date(p.date).toLocaleDateString('en-GB')
+        ]);
+        const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+        ws['!cols'] = [{wch:28},{wch:14},{wch:14},{wch:14},{wch:14},{wch:10},{wch:14},{wch:10},{wch:12}];
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Products');
+        XLSX.writeFile(wb, 'JR_Marketing_Products.xlsx');
+        Toast.success('Products exported to Excel!');
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       EDIT PRODUCT POPUP
+    ═══════════════════════════════════════════════════════ */
+    function openEditProduct(id) {
+        const all = JSON.parse(localStorage.getItem('jr_products') || '[]');
+        const p = all.find(x => x.id === id);
+        if (!p) return;
+        // Build modal HTML
+        const html = `
+        <div class="xl-overlay open" id="edit-prod-overlay" style="z-index:950" onclick="if(event.target===this)closeEditProduct()">
+            <div class="xl-modal" style="max-width:600px">
+                <div class="xl-header">
+                    <h3 style="gap:8px;display:flex;align-items:center">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        Edit Product
+                    </h3>
+                    <button class="xl-close" onclick="closeEditProduct()">✕</button>
+                </div>
+                <div class="xl-body" style="padding:20px 24px">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                        <div class="form-field" style="grid-column:span 2"><label class="form-label">Product Name *</label><input type="text" class="form-input" id="ep-name" value="${escHtml(p.name)}"></div>
+                        <div class="form-field"><label class="form-label">SKU</label><input type="text" class="form-input" id="ep-sku" value="${escHtml(p.sku)}"></div>
+                        <div class="form-field"><label class="form-label">Purchase Price (LKR)</label><input type="number" class="form-input" id="ep-buying-price" value="${p.buyingPrice||0}" min="0" step="0.01"></div>
+                        <div class="form-field"><label class="form-label">Selling Price (LKR) *</label><input type="number" class="form-input" id="ep-price" value="${p.price}" min="0" step="0.01"></div>
+                        <div class="form-field"><label class="form-label">Barcode Type</label><select class="form-select" id="ep-barcode"><option value="C128" ${p.barcodeType==='C128'?'selected':''}>Code 128</option><option value="C39" ${p.barcodeType==='C39'?'selected':''}>Code 39</option><option value="EAN13" ${p.barcodeType==='EAN13'?'selected':''}>EAN-13</option><option value="EAN8" ${p.barcodeType==='EAN8'?'selected':''}>EAN-8</option><option value="UPCA" ${p.barcodeType==='UPCA'?'selected':''}>UPC-A</option><option value="UPCE" ${p.barcodeType==='UPCE'?'selected':''}>UPC-E</option></select></div>
+                        <div class="form-field"><label class="form-label">Unit</label><select class="form-select" id="ep-unit"><option value="Pieces" ${p.unit==='Pieces'?'selected':''}>Pieces</option><option value="Boxes" ${p.unit==='Boxes'?'selected':''}>Boxes</option><option value="Rolls" ${p.unit==='Rolls'?'selected':''}>Rolls</option></select></div>
+                        <div class="form-field"><label class="form-label">Alert Qty</label><input type="number" class="form-input" id="ep-alert-qty" value="${p.alertQty||''}" min="0"></div>
+                    </div>
+                </div>
+                <div class="xl-footer">
+                    <div></div>
+                    <div class="xl-footer-right">
+                        <button class="xl-btn-cancel" onclick="closeEditProduct()">Cancel</button>
+                        <button class="xl-btn-import" onclick="saveEditProduct('${p.id}')"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+        document.body.insertAdjacentHTML('beforeend', html);
+        document.body.style.overflow = 'hidden';
+    }
+    function closeEditProduct() {
+        const ov = document.getElementById('edit-prod-overlay');
+        if (ov) ov.remove();
+        document.body.style.overflow = '';
+    }
+    function saveEditProduct(id) {
+        const name = document.getElementById('ep-name').value.trim();
+        const price = parseFloat(document.getElementById('ep-price').value);
+        if (!name) { Toast.warning('Product name is required'); return; }
+        if (isNaN(price) || price < 0) { Toast.warning('Valid selling price is required'); return; }
+        const all = JSON.parse(localStorage.getItem('jr_products') || '[]');
+        const idx = all.findIndex(x => x.id === id);
+        if (idx === -1) return;
+        all[idx].name = name;
+        all[idx].sku = document.getElementById('ep-sku').value.trim() || all[idx].sku;
+        all[idx].buyingPrice = parseFloat(document.getElementById('ep-buying-price').value) || 0;
+        all[idx].price = price;
+        all[idx].barcodeType = document.getElementById('ep-barcode').value;
+        all[idx].unit = document.getElementById('ep-unit').value;
+        all[idx].alertQty = parseInt(document.getElementById('ep-alert-qty').value) || null;
+        localStorage.setItem('jr_products', JSON.stringify(all));
+        Toast.success('Product updated!');
+        closeEditProduct();
+        renderList();
+    }
+    </script>
+</body>
+</html>
