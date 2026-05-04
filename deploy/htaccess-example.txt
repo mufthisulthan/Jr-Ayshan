@@ -1,0 +1,33 @@
+# .htaccess example for JR Marketing application
+# Place as `.htaccess` in the web root (htdocs)
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # If the requested resource doesn't exist, route to index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Disable directory listing
+Options -Indexes
+
+# Protect includes, config and sensitive files
+<FilesMatch "^(includes|components|config)/">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "\.(env|md|sql|ini)$">
+    Require all denied
+</FilesMatch>
+
+# If your host doesn't support "Require" directives (older Apache),
+# use the following instead:
+# <FilesMatch "^(includes|components|config)/">
+#   Order allow,deny
+#   Deny from all
+# </FilesMatch>
+
+# Note: Avoid php_value/php_flag directives on InfinityFree; use control panel settings.

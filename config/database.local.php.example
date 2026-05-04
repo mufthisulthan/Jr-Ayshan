@@ -1,0 +1,12 @@
+<?php
+// Copy this file to `config/database.local.php` and fill in your production credentials.
+// This file MUST NOT be committed to source control.
+
+return [
+    // example keys: host, port, name, user, pass
+    'host' => 'sql113.infinityfree.com',
+    'port' => '3306',
+    'name' => 'if0_41824262_jrmarketing',
+    'user' => 'if0_41824262',
+    'pass' => 'your_database_password_here',
+];

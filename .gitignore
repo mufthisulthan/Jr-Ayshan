@@ -1,0 +1,8 @@
+# Ignore local database credentials and other sensitive files
+/config/database.local.php
+/database/jrmarketinginferinityfree.md
+
+# Node / Python artifacts (if any)
+node_modules/
+*.pyc
+__pycache__/
