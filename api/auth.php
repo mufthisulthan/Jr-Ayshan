@@ -42,6 +42,55 @@ if ($action === 'logout') {
     jr_json_response(['success' => true]);
 }
 
+if ($action === 'switch-shop') {
+    if (!isset($_SESSION['user'])) {
+        jr_json_response(['success' => false, 'message' => 'Unauthorized.'], 401);
+    }
+
+    $input = jr_request_body();
+    $shopId = (int) ($input['shopId'] ?? 0);
+
+    if ($shopId <= 0) {
+        jr_json_response(['success' => false, 'message' => 'A valid shop is required.'], 422);
+    }
+
+    try {
+        $pdo = jr_db();
+        $shopStmt = $pdo->prepare(
+            'SELECT s.id, s.shop_code, s.name, s.shop_type, s.location
+             FROM shops s
+             INNER JOIN user_shops us ON us.shop_id = s.id
+             WHERE us.user_id = :user_id AND s.id = :shop_id AND s.is_active = 1
+             LIMIT 1'
+        );
+        $shopStmt->execute([
+            'user_id' => $_SESSION['user']['id'],
+            'shop_id' => $shopId,
+        ]);
+        $shop = $shopStmt->fetch();
+
+        if (!$shop) {
+            jr_json_response(['success' => false, 'message' => 'Shop not available for this user.'], 403);
+        }
+
+        $_SESSION['shop'] = [
+            'id' => (int) $shop['id'],
+            'code' => $shop['shop_code'],
+            'name' => $shop['name'],
+            'type' => $shop['shop_type'],
+            'location' => $shop['location'],
+        ];
+        $_SESSION['shop_id'] = (int) $shop['id'];
+
+        jr_json_response([
+            'success' => true,
+            'shop' => $_SESSION['shop'],
+        ]);
+    } catch (Throwable $throwable) {
+        jr_json_response(['success' => false, 'message' => 'Unable to switch shop right now.'], 500);
+    }
+}
+
 if ($action !== 'login') {
     jr_json_response(['success' => false, 'message' => 'Unsupported action.'], 400);
 }
@@ -69,7 +118,7 @@ try {
          FROM shops s
          INNER JOIN user_shops us ON us.shop_id = s.id
          WHERE us.user_id = :user_id AND s.is_active = 1
-         ORDER BY us.is_default DESC, s.id ASC
+            ORDER BY us.is_default DESC, s.display_order ASC, s.id ASC
          LIMIT 1'
     );
     $shopStmt->execute(['user_id' => $user['id']]);

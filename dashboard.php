@@ -81,6 +81,55 @@ $pageSlug = jr_page_slug();
         .nav-pos-btn:hover { background: rgba(255,255,255,0.22); }
         .nav-divider { width: 1px; height: 22px; background: rgba(255,255,255,0.2); margin: 0 4px; }
         .nav-date { color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 600; padding: 0 4px; white-space: nowrap; }
+        .nav-shop-switcher { position: relative; }
+        .nav-shop-switcher-btn {
+            display: flex; align-items: center; gap: 8px;
+            height: 34px; max-width: 220px;
+            border-radius: 8px; border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.1); color: #fff;
+            padding: 0 12px; cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .nav-shop-switcher-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.28); }
+        .nav-shop-switcher-btn:disabled { cursor: not-allowed; opacity: 0.85; }
+        .nav-shop-switcher-copy { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; line-height: 1.1; }
+        .nav-shop-switcher-label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.72); }
+        .nav-shop-switcher-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+        .nav-shop-switcher-type { font-size: 11px; color: rgba(255,255,255,0.72); text-transform: capitalize; }
+        .nav-shop-switcher-chevron { font-size: 10px; color: rgba(255,255,255,0.75); flex-shrink: 0; }
+        .nav-shop-switcher-menu {
+            display: none; position: absolute; top: 42px; right: 0;
+            width: 320px; padding: 10px; z-index: 460;
+            background: rgba(255,255,255,0.98); border: 1px solid #dbe2ef;
+            border-radius: 12px; box-shadow: 0 14px 34px rgba(15,23,42,0.18);
+            backdrop-filter: blur(10px);
+        }
+        .nav-shop-switcher.open .nav-shop-switcher-menu { display: block; }
+        .nav-shop-switcher-menu-title { font-size: 12px; font-weight: 800; color: #0f172a; padding: 4px 6px 10px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .nav-shop-option {
+            width: 100%; display: flex; align-items: flex-start; gap: 10px;
+            border: 1px solid #e5e7eb; background: #fff; border-radius: 10px;
+            padding: 10px 12px; cursor: pointer; text-align: left;
+            transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+        }
+        .nav-shop-option + .nav-shop-option { margin-top: 8px; }
+        .nav-shop-option:hover { transform: translateY(-1px); border-color: #16a34a; background: #f0fdf4; }
+        .nav-shop-option.active { border-color: #16a34a; background: #ecfdf5; }
+        .nav-shop-badge {
+            width: 38px; height: 38px; border-radius: 12px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 900; color: #fff;
+            background: linear-gradient(135deg, #0f766e, #14b8a6);
+        }
+        .nav-shop-option.active .nav-shop-badge { background: linear-gradient(135deg, #15803d, #22c55e); }
+        .nav-shop-option-copy { flex: 1; min-width: 0; }
+        .nav-shop-option-name { font-size: 14px; font-weight: 800; color: #111827; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .nav-shop-option-meta { font-size: 12px; color: #6b7280; margin-top: 2px; }
+        .nav-shop-option-status {
+            margin-left: auto; align-self: center; font-size: 12px; font-weight: 800;
+            color: #15803d; display: none;
+        }
+        .nav-shop-option.active .nav-shop-option-status { display: block; }
         .nav-bell { position: relative; }
         .nav-bell-dot {
             position: absolute; top: 6px; right: 6px;
@@ -417,6 +466,21 @@ $pageSlug = jr_page_slug();
                 </svg>
                 POS
             </button>
+            <div class="nav-divider"></div>
+            <div class="nav-shop-switcher" id="nav-shop-switcher">
+                <button class="nav-shop-switcher-btn" id="nav-shop-switcher-btn" type="button" title="Switch shop">
+                    <span class="nav-shop-switcher-copy">
+                        <span class="nav-shop-switcher-label">Active Shop</span>
+                        <span class="nav-shop-switcher-name" id="nav-shop-switcher-name">Loading...</span>
+                        <span class="nav-shop-switcher-type" id="nav-shop-switcher-type">retail</span>
+                    </span>
+                    <span class="nav-shop-switcher-chevron">▾</span>
+                </button>
+                <div class="nav-shop-switcher-menu" id="nav-shop-switcher-menu" role="menu" aria-label="Shop selector">
+                    <div class="nav-shop-switcher-menu-title">Choose a shop</div>
+                    <div id="nav-shop-switcher-list"></div>
+                </div>
+            </div>
             <div class="nav-divider"></div>
             <span class="nav-date" id="nav-date">24/02/2026</span>
             <div class="nav-divider"></div>
@@ -921,6 +985,102 @@ $pageSlug = jr_page_slug();
             document.getElementById('nav-username').textContent = name;
             document.getElementById('nav-avatar').textContent   = name.charAt(0).toUpperCase();
         }
+
+        const shopSwitcher = document.getElementById('nav-shop-switcher');
+        const shopSwitcherBtn = document.getElementById('nav-shop-switcher-btn');
+        const shopSwitcherName = document.getElementById('nav-shop-switcher-name');
+        const shopSwitcherType = document.getElementById('nav-shop-switcher-type');
+        const shopSwitcherList = document.getElementById('nav-shop-switcher-list');
+        let shopItems = [];
+        let currentShopId = Number((session && session.shop && session.shop.id) || 0);
+
+        function closeShopSwitcher() {
+            shopSwitcher.classList.remove('open');
+        }
+
+        function renderShopSwitcher() {
+            const activeShop = shopItems.find(shop => Number(shop.id) === Number(currentShopId)) || shopItems[0] || null;
+
+            if (!activeShop) {
+                shopSwitcherName.textContent = 'No shops';
+                shopSwitcherType.textContent = 'assigned';
+                shopSwitcherBtn.disabled = true;
+                shopSwitcherList.innerHTML = '';
+                return;
+            }
+
+            shopSwitcherBtn.disabled = false;
+            shopSwitcherName.textContent = activeShop.name;
+            shopSwitcherType.textContent = `${activeShop.shop_type}${activeShop.location ? ` · ${activeShop.location}` : ''}`;
+
+            shopSwitcherList.innerHTML = shopItems.map(shop => {
+                const isActive = Number(shop.id) === Number(activeShop.id);
+                const typeLabel = shop.shop_type === 'wholesale' ? 'Wholesale' : 'Retail';
+                const badgeText = (shop.shop_code || 'SH').slice(0, 2).toUpperCase();
+
+                return `
+                    <button type="button" class="nav-shop-option${isActive ? ' active' : ''}" data-shop-id="${shop.id}">
+                        <div class="nav-shop-badge">${Utils.sanitize(badgeText)}</div>
+                        <div class="nav-shop-option-copy">
+                            <div class="nav-shop-option-name">${Utils.sanitize(shop.name)}</div>
+                            <div class="nav-shop-option-meta">${Utils.sanitize(typeLabel)}${shop.location ? ` · ${Utils.sanitize(shop.location)}` : ''}</div>
+                        </div>
+                        <div class="nav-shop-option-status">Current</div>
+                    </button>
+                `;
+            }).join('');
+
+            shopSwitcherList.querySelectorAll('.nav-shop-option').forEach(option => {
+                option.addEventListener('click', async () => {
+                    const nextShopId = Number(option.getAttribute('data-shop-id'));
+                    if (!nextShopId || nextShopId === Number(activeShop.id)) {
+                        closeShopSwitcher();
+                        return;
+                    }
+
+                    Toast.info('Switching shop...');
+                    const result = await Auth.switchShop(nextShopId);
+                    if (!result.success) {
+                        Toast.error(result.message || 'Unable to switch shop.');
+                        return;
+                    }
+
+                    window.location.reload();
+                });
+            });
+        }
+
+        async function loadShops() {
+            try {
+                const response = await fetch('/api/shops.php', { credentials: 'same-origin' });
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.message || 'Unable to load shops.');
+                }
+
+                shopItems = Array.isArray(result.shops) ? result.shops : [];
+                currentShopId = Number(result.currentShopId || currentShopId || (shopItems[0] && shopItems[0].id) || 0);
+                renderShopSwitcher();
+            } catch (error) {
+                shopSwitcherName.textContent = session && session.shop ? session.shop.name : 'Shop';
+                shopSwitcherType.textContent = session && session.shop ? session.shop.type : 'retail';
+                shopSwitcherBtn.disabled = true;
+            }
+        }
+
+        shopSwitcherBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            shopSwitcher.classList.toggle('open');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!shopSwitcher.contains(event.target)) {
+                closeShopSwitcher();
+            }
+        });
+
+        loadShops();
 
         /* Live date */
         const now = new Date();

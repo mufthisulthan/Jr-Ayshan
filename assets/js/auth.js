@@ -62,6 +62,31 @@ const Auth = {
     },
 
     /**
+     * Switch the active shop for the current session
+     */
+    async switchShop(shopId) {
+        const response = await fetch('/api/auth.php?action=switch-shop', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify({ shopId: Number(shopId) })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            return { success: false, message: result.message || 'Unable to switch shop.' };
+        }
+
+        const session = this.getSession();
+        const nextSession = session ? { ...session, shop: result.shop } : { user: null, shop: result.shop };
+        Utils.storage.set(this.SESSION_KEY, nextSession);
+        window.JR_SESSION = nextSession;
+
+        return { success: true, shop: result.shop };
+    },
+
+    /**
      * Check if user is logged in
      */
     isLoggedIn() {

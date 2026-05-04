@@ -20,11 +20,11 @@ if (!isset($_SESSION['user'])) {
 try {
     $pdo = jr_db();
     $stmt = $pdo->prepare(
-        'SELECT s.id, s.shop_code, s.name, s.shop_type, s.location, us.is_default
+           'SELECT s.id, s.shop_code, s.name, s.shop_type, s.display_order, s.location, us.is_default
          FROM shops s
          INNER JOIN user_shops us ON us.shop_id = s.id
          WHERE us.user_id = :user_id AND s.is_active = 1
-         ORDER BY us.is_default DESC, s.id ASC'
+            ORDER BY us.is_default DESC, s.display_order ASC, s.id ASC'
     );
     $stmt->execute(['user_id' => $_SESSION['user']['id']]);
 

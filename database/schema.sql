@@ -3,6 +3,7 @@ CREATE TABLE shops (
     shop_code VARCHAR(32) NOT NULL UNIQUE,
     name VARCHAR(120) NOT NULL,
     shop_type ENUM('retail','wholesale') NOT NULL DEFAULT 'retail',
+    display_order TINYINT UNSIGNED NOT NULL DEFAULT 0,
     location VARCHAR(255) NULL,
     phone VARCHAR(32) NULL,
     email VARCHAR(120) NULL,
@@ -359,6 +360,6 @@ CREATE TABLE audit_log (
     CONSTRAINT fk_audit_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO shops (shop_code, name, shop_type, location) VALUES
-('WHOLESALE', 'JR Marketing Wholesale', 'wholesale', 'Main wholesale site'),
-('RETAIL', 'JR Marketing Retail', 'retail', 'Retail shop');
+INSERT INTO shops (shop_code, name, shop_type, display_order, location) VALUES
+('WHOLESALE', 'JR Marketing Wholesale', 'wholesale', 1, 'Main wholesale site'),
+('RETAIL', 'JR Marketing Retail', 'retail', 2, 'Retail shop');
