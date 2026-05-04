@@ -98,10 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setLoading(loginBtn, true);
 
-        // Simulate network delay
-        await new Promise(r => setTimeout(r, 900));
-
-        const result = Auth.login(username, password);
+        const result = await Auth.login(username, password);
         setLoading(loginBtn, false);
 
         if (result.success) {
@@ -116,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showAlert(`Login successful! Redirecting...`, 'success');
 
             setTimeout(() => {
-                window.location.href = 'dashboard.html';
+                window.location.href = 'dashboard.php';
             }, 1200);
         } else {
             showAlert(result.message);
@@ -128,6 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ---- Redirect if already logged in ----
     if (Auth.isLoggedIn()) {
-        window.location.href = 'dashboard.html';
+        window.location.href = 'dashboard.php';
     }
 });

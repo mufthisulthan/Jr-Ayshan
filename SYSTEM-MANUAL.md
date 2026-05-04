@@ -55,7 +55,7 @@ All data is stored locally in your browser — no internet connection is needed 
 ### Steps to Open
 1. Open **Visual Studio Code** (or any code editor)
 2. Install the **Live Server** extension
-3. Right-click on `index.html` → Choose **"Open with Live Server"**
+3. Right-click on `index.php` → Choose **"Open with Live Server"**
 4. The login page will open in your browser
 
 > **Note:** You must use a local server (Live Server). Simply double-clicking the file will not work properly.

@@ -9,14 +9,14 @@ Sri Lanka | JR Marketing
 ```
 Jr-Marketing-Prototype/
 │
-├── index.html               ← Login Page (main entry)
-├── dashboard.html           ← Dashboard (post-login)
-├── forgot-password.html     ← Forgot Password page
+├── index.php               ← Login Page (main entry)
+├── dashboard.php           ← Dashboard (post-login)
+├── forgot-password.php     ← Forgot Password page
 │
 ├── components/              ← Reusable HTML components
-│   ├── login-logo.html      ← Logo + tagline block
-│   ├── login-form.html      ← Login form markup
-│   └── login-footer.html    ← Copyright footer
+│   ├── login-logo.php      ← Logo + tagline block
+│   ├── login-form.php      ← Login form markup
+│   └── login-footer.php    ← Copyright footer
 │
 └── assets/
     ├── css/
@@ -41,7 +41,7 @@ Jr-Marketing-Prototype/
 
 ### Option 1 — VS Code Live Server (recommended)
 1. Install the **Live Server** extension in VS Code.
-2. Right-click `index.html` → **Open with Live Server**.
+2. Right-click `index.php` → **Open with Live Server**.
 
 ### Option 2 — Python
 ```bash
@@ -73,7 +73,7 @@ Components live in `/components/` as standalone HTML fragments.
 They are loaded dynamically by `ComponentLoader.load()`:
 
 ```js
-ComponentLoader.load('#target-selector', 'components/my-component.html', callback);
+ComponentLoader.load('#target-selector', 'components/my-component.php', callback);
 ```
 
 This keeps pages clean and components reusable across the site.

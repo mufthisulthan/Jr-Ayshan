@@ -1,4 +1,4 @@
-$file = 'w:\Web Application\Visual Studio Code\Jr-Marketing-Prototype\pos.html'
+$file = 'w:\Web Application\Visual Studio Code\Jr-Marketing-Prototype\pos.php'
 $lines = [System.IO.File]::ReadAllLines($file)
 $keep = $lines[0..3592]
 

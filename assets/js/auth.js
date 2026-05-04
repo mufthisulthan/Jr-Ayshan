@@ -11,20 +11,10 @@ const Auth = {
     REMEMBER_KEY: 'jr_remember',
 
     /**
-     * Demo credentials (replace with real API in production)
-     */
-    _demoUsers: [
-        { username: 'admin',    password: 'admin123',  role: 'Administrator', name: 'System Admin' },
-        { username: 'manager',  password: 'manager123', role: 'Manager',      name: 'Branch Manager' },
-        { username: 'cashier',  password: 'cashier123', role: 'Cashier',      name: 'Cash Counter 1' },
-        { username: 'demo',     password: 'demo',       role: 'Demo',         name: 'Demo User' },
-    ],
-
-    /**
      * Attempt login with username/password
      * Returns { success, user, message }
      */
-    login(username, password) {
+    async login(username, password) {
         const trimUser = username.trim();
         const trimPass = password.trim();
 
@@ -32,42 +22,60 @@ const Auth = {
             return { success: false, message: 'Please enter your username and password.' };
         }
 
-        const user = this._demoUsers.find(
-            u => u.username === trimUser && u.password === trimPass
-        );
+        try {
+            const response = await fetch('/api/auth.php?action=login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin',
+                body: JSON.stringify({ username: trimUser, password: trimPass })
+            });
 
-        if (!user) {
-            return { success: false, message: 'Invalid username or password. Please try again.' };
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                return { success: false, message: result.message || 'Invalid username or password. Please try again.' };
+            }
+
+            const session = {
+                user: result.user,
+                shop: result.shop,
+                loginTime: new Date().toISOString()
+            };
+
+            Utils.storage.set(this.SESSION_KEY, session);
+            window.JR_SESSION = session;
+
+            return { success: true, user: session.user, message: `Welcome, ${session.user.name}!` };
+        } catch (error) {
+            return { success: false, message: 'Unable to reach the login service.' };
         }
-
-        const session = {
-            user: { username: user.username, name: user.name, role: user.role },
-            loginTime: new Date().toISOString()
-        };
-
-        Utils.storage.set(this.SESSION_KEY, session);
-        return { success: true, user: session.user, message: `Welcome, ${user.name}!` };
     },
 
     /**
      * Log out and clear session
      */
     logout() {
+        fetch('/api/auth.php?action=logout', { method: 'POST', credentials: 'same-origin' }).catch(() => {});
         Utils.storage.remove(this.SESSION_KEY);
-        window.location.href = 'index.html';
+        window.JR_SESSION = null;
+        window.location.href = 'index.php';
     },
 
     /**
      * Check if user is logged in
      */
     isLoggedIn() {
-        return !!Utils.storage.get(this.SESSION_KEY);
+        return !!this.getSession();
     },
 
     /**
      * Get current user session
      */
     getSession() {
+        if (window.JR_SESSION) {
+            return window.JR_SESSION;
+        }
+
         return Utils.storage.get(this.SESSION_KEY);
     },
 
@@ -97,7 +105,7 @@ const Auth = {
      */
     requireAuth() {
         if (!this.isLoggedIn()) {
-            window.location.href = 'index.html';
+            window.location.href = 'index.php';
         }
     }
 };
